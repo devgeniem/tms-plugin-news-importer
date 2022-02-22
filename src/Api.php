@@ -47,7 +47,7 @@ final class Api {
         );
 
         $response = \wp_remote_get( $request_url, $request_args );
-
+        print("<pre>".print_r($response,true)."</pre>");
         if ( 200 !== \wp_remote_retrieve_response_code( $response ) ) {
             ( new Logger() )->error( print_r( $response, true ) ); // phpcs:ignore
 
