@@ -47,7 +47,6 @@ final class Api {
         );
 
         $response = \wp_remote_get( $request_url, $request_args );
-        print("<pre>".print_r($response,true)."</pre>");
         if ( 200 !== \wp_remote_retrieve_response_code( $response ) ) {
             ( new Logger() )->error( print_r( $response, true ) ); // phpcs:ignore
 
@@ -75,7 +74,9 @@ final class Api {
      */
     public function get() {
         $args = [
-            'headers' => [],
+            'headers' => [
+                'Content-Type' => 'application/vnd.api+json',
+            ],
             'timeout' => 30,
         ];
 
@@ -84,9 +85,6 @@ final class Api {
         if ( ! empty( $basic_auth_key ) ) {
             $args['headers']['Authorization'] = 'Basic ' . base64_encode( $basic_auth_key ); // phpcs:ignore
         }
-
-        var_dump( $args['headers']['Authorization'], $this->get_api_base_url());
-        die();
 
         return $this->do_get( [], [], $args );
     }

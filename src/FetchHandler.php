@@ -35,8 +35,9 @@ final class FetchHandler {
      * @return array
      */
     private function get_news() : array {
-        $api = new Api();
-        return $api->get();
+        $api  = new Api();
+        $news = $api->get();
+        return [];
     }
 
     /**

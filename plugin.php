@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: tms-plugin-news-fetcher
+ * Plugin Name: TMS News Fetcher
  * Plugin URI: https://github.com/devgeniem/tms-plugin-news-fetcher
- * Description: Fetch news from tampere.fi api
+ * Description: Fetch news from tampere.fi api and import/update news.
  * Version: 1.0.0
  * Requires PHP: 7.4
  * Author: Geniem Oy
@@ -14,6 +14,11 @@
  */
 
 use TMS\Plugin\NewsFetcher\NewsFetcherPlugin;
+
+// If not on the main site, bail.
+if ( ! is_main_site() ) {
+    return;
+}
 
 // Check if Composer has been initialized in this directory.
 // Otherwise we just use global composer autoloading.

@@ -5,7 +5,7 @@
 
 namespace TMS\Plugin\NewsFetcher;
 
-use TMS\Plugin\NewsFetcher\Cron;
+use TMS\Plugin\NewsFetcher\PostTypes\News;
 
 /**
  * Class NewsFetcherPlugin
@@ -110,13 +110,21 @@ final class NewsFetcherPlugin {
         $this->plugin_path = $plugin_path;
         $this->plugin_uri  = plugin_dir_url( $plugin_path ) . basename( $this->plugin_path );
 
-        $this->init_cron();
+        $this->hooks();
     }
 
     /**
-     * Init cron.
+     * Add plugin hooks and filters.
      */
-    protected function init_cron() {
-        ( new Cron() )->hooks();
+    protected function hooks() {
+        add_action( 'init', \Closure::fromCallable( [ $this, 'init_classes' ] ), 0 );
+    }
+
+    /**
+     * Init classes
+     */
+    protected function init_classes() {
+        ( new Cron())->hooks();
+        ( new News() );
     }
 }
