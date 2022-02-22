@@ -3,14 +3,14 @@
  * Copyright (c) 2021 Geniem Oy.
  */
 
-namespace TMS\Plugin\NewsFethcher;
+namespace TMS\Plugin\NewsFetcher;
 
 use TMS\Theme\Base\Logger;
 
 /**
- * NewsFethcher API
+ * NewsFetcher API
  *
- * @package TMS\Plugin\NewsFethcher
+ * @package TMS\Plugin\NewsFetcher
  */
 final class Api {
 
@@ -84,6 +84,9 @@ final class Api {
         if ( ! empty( $basic_auth_key ) ) {
             $args['headers']['Authorization'] = 'Basic ' . base64_encode( $basic_auth_key ); // phpcs:ignore
         }
+
+        var_dump( $args['headers']['Authorization'], $this->get_api_base_url());
+        die();
 
         return $this->do_get( [], [], $args );
     }

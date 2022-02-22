@@ -23,8 +23,9 @@ final class Cron {
      * Hooks
      */
     public function hooks() : void {
-        add_action( 'init', \Closure::fromCallable( [ $this, 'maybe_schedule_news_update' ] ) );
-        add_action( self::CRON_HOOK, \Closure::fromCallable( [ $this, 'maybe_get_news' ] ) );
+        // add_action( 'init', \Closure::fromCallable( [ $this, 'maybe_schedule_news_fetch' ] ) );
+        add_action( 'init', \Closure::fromCallable( [ $this, 'init_fetch_handler' ] ) );
+        // add_action( self::CRON_HOOK, \Closure::fromCallable( [ $this, 'init_fetch_handler' ] ) );
     }
 
     /**
@@ -32,7 +33,7 @@ final class Cron {
      *
      * @return void
      */
-    private function maybe_schedule_news_update() : void {
+    private function maybe_schedule_news_fetch() : void {
 
         // Schedule the event if it is not scheduled.
         if ( ! wp_next_scheduled( self::CRON_HOOK ) ) {
@@ -41,9 +42,11 @@ final class Cron {
     }
 
     /**
-     * Maybe get news
+     * Init fetch handler.
      *
      * @return void
      */
-    private function maybe_get_news() : void {}
+    private function init_fetch_handler() : void {
+        new FetchHandler();
+    }
 }

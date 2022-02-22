@@ -5,7 +5,7 @@
 
 namespace TMS\Plugin\NewsFetcher;
 
-use TMS\Plugin\NewsFethcher\Cron;
+use TMS\Plugin\NewsFetcher\Cron;
 
 /**
  * Class NewsFetcherPlugin
