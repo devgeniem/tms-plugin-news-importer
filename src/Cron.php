@@ -3,14 +3,14 @@
  * Copyright (c) 2021 Geniem Oy.
  */
 
-namespace TMS\Plugin\NewsFeed;
+namespace TMS\Plugin\NewsFetcher;
 
 use TMS\Theme\Base\Logger;
 
 /**
- * NewsFeed Cron
+ * NewsFetcher Cron
  *
- * @package TMS\Plugin\NewsFeed
+ * @package TMS\Plugin\NewsFetcher
  */
 final class Cron {
 

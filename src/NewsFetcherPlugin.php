@@ -3,19 +3,19 @@
  * Copyright (c) 2021 Geniem Oy.
  */
 
-namespace TMS\Plugin\NewsFeed;
+namespace TMS\Plugin\NewsFetcher;
 
 /**
- * Class NewsFeedPlugin
+ * Class NewsFetcherPlugin
  *
- * @package TMS\Plugin\NewsFeed
+ * @package TMS\Plugin\NewsFetcher
  */
-final class NewsFeedPlugin {
+final class NewsFetcherPlugin {
 
     /**
      * Holds the singleton.
      *
-     * @var NewsFeedPlugin
+     * @var NewsFetcherPlugin
      */
     protected static $instance;
 
@@ -41,9 +41,9 @@ final class NewsFeedPlugin {
     /**
      * Get the instance.
      *
-     * @return Plugin
+     * @return NewsFetcherPlugin
      */
-    public static function get_instance() : Plugin {
+    public static function get_instance() : NewsFetcherPlugin {
         return self::$instance;
     }
 

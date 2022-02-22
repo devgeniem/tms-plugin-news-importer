@@ -1,5 +1,5 @@
 {
-    "name": "devgeniem/tms-plugin-news-feed",
+    "name": "devgeniem/tms-plugin-news-fetcher",
     "type": "wordpress-plugin",
     "license": "GPL-3.0-or-later",
     "description": "Fetch news from tampere.fi api",
@@ -20,7 +20,7 @@
         "composer/installers": "^v1.10.0"
     },
     "autoload": {
-        "psr-4": {"TMS\\Plugin\\NewsFeed\\": "src/"}
+        "psr-4": {"TMS\\Plugin\\NewsFetcher\\": "src/"}
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
