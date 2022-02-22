@@ -3,19 +3,19 @@
  * Copyright (c) 2021 Geniem Oy.
  */
 
-namespace Tms\Plugin\Boilerplate;
+namespace TMS\Plugin\NewsFeed;
 
 /**
- * Class Plugin
+ * Class NewsFeedPlugin
  *
- * @package Tms\Plugin\Boilerplate
+ * @package TMS\Plugin\NewsFeed
  */
-final class Plugin {
+final class NewsFeedPlugin {
 
     /**
      * Holds the singleton.
      *
-     * @var Plugin
+     * @var NewsFeedPlugin
      */
     protected static $instance;
 

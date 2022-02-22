@@ -1,19 +1,19 @@
 <?php
 /**
- * Plugin Name: {{plugin-name}}
- * Plugin URI: https://github.com/devgeniem/tms-plugin-boilerplate
- * Description: {{plugin-description}}
+ * Plugin Name: tms-plugin-news-feed
+ * Plugin URI: https://github.com/devgeniem/tms-plugin-news-feed
+ * Description: Fetch news from tampere.fi api
  * Version: 1.0.0
  * Requires PHP: 7.4
  * Author: Geniem Oy
  * Author URI: https://geniem.com
  * License: GPL v3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain: {{text-domain}}
+ * Text Domain: tms-plugin-news-feed
  * Domain Path: /languages
  */
 
-use Tms\Plugin\Boilerplate\Plugin;
+use TMS\Plugin\NewsFeed\NewsFeedPlugin;
 
 // Check if Composer has been initialized in this directory.
 // Otherwise we just use global composer autoloading.
@@ -28,15 +28,15 @@ $plugin_version = $plugin_data['Version'];
 $plugin_path = __DIR__;
 
 // Initialize the plugin.
-Plugin::init( $plugin_version, $plugin_path );
+NewsFeedPlugin::init( $plugin_version, $plugin_path );
 
-if ( ! function_exists( 'boilerplate' ) ) {
+if ( ! function_exists( 'tms_plugin_news_feed' ) ) {
     /**
-     * Get the {{plugin-name}} plugin instance.
+     * Get the tms-plugin-news-feed plugin instance.
      *
-     * @return Plugin
+     * @return NewsFeedPlugin
      */
-    function boilerplate() : Plugin {
-        return Plugin::plugin();
+    function tms_plugin_news_feed() : NewsFeedPlugin {
+        return NewsFeedPlugin::plugin();
     }
 }

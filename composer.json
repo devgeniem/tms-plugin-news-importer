@@ -1,14 +1,14 @@
 {
-    "name": "tampere/tms-plugin-boilerplate",
+    "name": "devgeniem/tms-plugin-news-feed",
     "type": "wordpress-plugin",
     "license": "GPL-3.0-or-later",
-    "description": "{{plugin-description}}",
+    "description": "Fetch news from tampere.fi api",
     "homepage": "https://geniem.com",
     "authors": [
         {
-            "name": "Your Name",
+            "name": "Mika Miinalainen",
             "role": "Developer",
-            "homepage": "https://github.com/yourname"
+            "homepage": "https://github.com/mikeminish"
         }
     ],
     "minimum-stability": "stable",
@@ -20,7 +20,7 @@
         "composer/installers": "^v1.10.0"
     },
     "autoload": {
-        "psr-4": {"Tms\\Plugin\\Boilerplate\\": "src/"}
+        "psr-4": {"TMS\\Plugin\\NewsFeed\\": "src/"}
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

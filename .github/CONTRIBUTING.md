@@ -1,6 +1,6 @@
-# Contribute To {{plugin-name}}
+# Contribute To tms-plugin-news-feed
 
-Community-made patches, localisations, bug reports and contributions are welcome and help make {{plugin-name}} the best plugin for Tampere Multisite WordPress.
+Community-made patches, localisations, bug reports and contributions are welcome and help make tms-plugin-news-feed the best plugin for Tampere Multisite WordPress.
 
 When contributing please ensure you follow the guidelines below so that we can keep on top of things.
 
