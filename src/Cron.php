@@ -47,6 +47,6 @@ final class Cron {
      * @return void
      */
     private function init_fetch_handler() : void {
-        echo 'juuh';
+        // new FetchHandler();
     }
 }
