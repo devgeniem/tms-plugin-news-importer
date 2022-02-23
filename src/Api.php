@@ -46,7 +46,7 @@ final class Api {
             )
         );
 
-        $response  = get_transient( 'sakka' );
+        $response  = get_transient( 'test' );
 
         if ( $response ) {
             return $response;
@@ -59,7 +59,7 @@ final class Api {
             return false;
         }
 
-        set_transient( 'sakka', json_decode( \wp_remote_retrieve_body( $response ) ), HOUR_IN_SECONDS * 2 );
+        set_transient( 'test', json_decode( \wp_remote_retrieve_body( $response ) ), HOUR_IN_SECONDS * 2 );
 
         return json_decode( \wp_remote_retrieve_body( $response ) );
     }

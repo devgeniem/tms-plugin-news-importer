@@ -24,7 +24,7 @@ final class ImportController {
      * Constructor
      */
     public function __construct() {
-
+        delete_option( 'tampere_news_last_import_time' );
         $news = $this->get_news();
         $importables_list = $this->create_importables_list( $news );
 
@@ -42,17 +42,17 @@ final class ImportController {
         return $news;
     }
 
-    private function create_importables_list() {
+    private function create_importables_list( $news ) {
         $list = [];
 
-        if ( empty( $this->news ) ) {
+        if ( empty( $news ) ) {
             return $list;
         }
 
         self::$last_import_time = get_option( 'tampere_news_last_import_time' ) ?: null;
         self::$current_import_time = date( 'Y-m-d H:i:s' );
 
-        foreach ( $this->news as $object ) {
+        foreach ( $news as $object ) {
             $object = self::create_importable_object( new ImportObjectData( $object ) );
             
             if ( empty( $object ) ) {
