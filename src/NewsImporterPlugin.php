@@ -5,8 +5,6 @@
 
 namespace TMS\Plugin\NewsImporter;
 
-use TMS\Plugin\NewsImporter\PostTypes\News;
-
 /**
  * Class NewsImporterPlugin
  *
@@ -125,6 +123,5 @@ final class NewsImporterPlugin {
      */
     protected function init_classes() {
         ( new Cron())->hooks();
-        ( new News() );
     }
 }

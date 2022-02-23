@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: TMS News Fetcher
+ * Plugin Name: TMS News Importer
  * Plugin URI: https://github.com/devgeniem/tms-plugin-news-importer
- * Description: Fetch news from tampere.fi api and import/update news.
+ * Description: Import news from tampere.fi api.
  * Version: 1.0.0
  * Requires PHP: 7.4
  * Author: Geniem Oy
