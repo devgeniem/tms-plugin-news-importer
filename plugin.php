@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: TMS News Fetcher
- * Plugin URI: https://github.com/devgeniem/tms-plugin-news-fetcher
+ * Plugin URI: https://github.com/devgeniem/tms-plugin-news-importer
  * Description: Fetch news from tampere.fi api and import/update news.
  * Version: 1.0.0
  * Requires PHP: 7.4
@@ -9,11 +9,11 @@
  * Author URI: https://geniem.com
  * License: GPL v3 or later
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain: tms-plugin-news-fetcher
+ * Text Domain: tms-plugin-news-importer
  * Domain Path: /languages
  */
 
-use TMS\Plugin\NewsFetcher\NewsFetcherPlugin;
+use TMS\Plugin\NewsImporter\NewsImporterPlugin;
 
 // If not on the main site, bail.
 if ( ! is_main_site() ) {
@@ -33,15 +33,15 @@ $plugin_version = $plugin_data['Version'];
 $plugin_path = __DIR__;
 
 // Initialize the plugin.
-NewsFetcherPlugin::init( $plugin_version, $plugin_path );
+NewsImporterPlugin::init( $plugin_version, $plugin_path );
 
-if ( ! function_exists( 'tms_plugin_news_fetcher' ) ) {
+if ( ! function_exists( 'tms_plugin_news_importer' ) ) {
     /**
-     * Get the tms-plugin-news-fetcher plugin instance.
+     * Get the tms-plugin-news-importer plugin instance.
      *
-     * @return NewsFetcherPlugin
+     * @return NewsImporterPlugin
      */
-    function tms_plugin_news_fetcher() : NewsFetcherPlugin {
-        return NewsFetcherPlugin::plugin();
+    function tms_plugin_news_importer() : NewsImporterPlugin {
+        return NewsImporterPlugin::plugin();
     }
 }

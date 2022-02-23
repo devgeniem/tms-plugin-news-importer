@@ -3,21 +3,21 @@
  * Copyright (c) 2021 Geniem Oy.
  */
 
-namespace TMS\Plugin\NewsFetcher;
+namespace TMS\Plugin\NewsImporter;
 
-use TMS\Plugin\NewsFetcher\PostTypes\News;
+use TMS\Plugin\NewsImporter\PostTypes\News;
 
 /**
- * Class NewsFetcherPlugin
+ * Class NewsImporterPlugin
  *
- * @package TMS\Plugin\NewsFetcher
+ * @package TMS\Plugin\NewsImporter
  */
-final class NewsFetcherPlugin {
+final class NewsImporterPlugin {
 
     /**
      * Holds the singleton.
      *
-     * @var NewsFetcherPlugin
+     * @var NewsImporterPlugin
      */
     protected static $instance;
 
@@ -31,9 +31,9 @@ final class NewsFetcherPlugin {
     /**
      * Get the instance.
      *
-     * @return NewsFetcherPlugin
+     * @return NewsImporterPlugin
      */
-    public static function get_instance() : NewsFetcherPlugin {
+    public static function get_instance() : NewsImporterPlugin {
         return self::$instance;
     }
 

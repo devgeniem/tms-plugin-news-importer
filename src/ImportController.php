@@ -3,16 +3,16 @@
  * Copyright (c) 2021 Geniem Oy.
  */
 
-namespace TMS\Plugin\NewsFetcher;
+namespace TMS\Plugin\NewsImporter;
 
 use TMS\Theme\Base\Logger;
 
 /**
- * NewsFetcher FetchHandler
+ * NewsImporter ImportController
  *
- * @package TMS\Plugin\NewsFetcher
+ * @package TMS\Plugin\NewsImporter
  */
-final class FetchHandler {
+final class ImportController {
 
     /**
      * This holds the news to be created or updated.

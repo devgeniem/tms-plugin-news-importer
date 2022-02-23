@@ -3,14 +3,14 @@
  * Copyright (c) 2021 Geniem Oy.
  */
 
-namespace TMS\Plugin\NewsFetcher;
+namespace TMS\Plugin\NewsImporter;
 
 use TMS\Theme\Base\Logger;
 
 /**
- * NewsFetcher API
+ * NewsImporter API
  *
- * @package TMS\Plugin\NewsFetcher
+ * @package TMS\Plugin\NewsImporter
  */
 final class Api {
 
