@@ -24,9 +24,9 @@ final class Cron {
      */
     public function hooks() : void {
 
-        // add_action( 'init', \Closure::fromCallable( [ $this, 'maybe_schedule_news_fetch' ] ) );
-        // add_action( 'init', \Closure::fromCallable( [ $this, 'init_fetch_handler' ] ) );
-        // add_action( self::CRON_HOOK, \Closure::fromCallable( [ $this, 'init_fetch_handler' ] ) );
+        // add_action( 'init', \Closure::fromCallable( [ $this, 'maybe_schedule_news_import' ] ) );
+        // add_action( 'init', \Closure::fromCallable( [ $this, 'init_import_handler' ] ) );
+        // add_action( self::CRON_HOOK, \Closure::fromCallable( [ $this, 'init_import_handler' ] ) );
     }
 
     /**
@@ -34,7 +34,7 @@ final class Cron {
      *
      * @return void
      */
-    private function maybe_schedule_news_fetch() : void {
+    private function maybe_schedule_news_import() : void {
 
         // Schedule the event if it is not scheduled.
         if ( ! wp_next_scheduled( self::CRON_HOOK ) ) {
@@ -43,11 +43,11 @@ final class Cron {
     }
 
     /**
-     * Init fetch handler.
+     * Init import handler.
      *
      * @return void
      */
-    private function init_fetch_handler() : void {
-        ( new ImportController() );
+    private function init_import_handler() : void {
+        ( new Importer() )->import_posts_to_main_site();
     }
 }

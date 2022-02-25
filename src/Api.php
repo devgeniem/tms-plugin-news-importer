@@ -46,20 +46,13 @@ final class Api {
             )
         );
 
-        $response  = get_transient( 'test' );
-
-        if ( $response ) {
-            return $response;
-        }
-
         $response = \wp_remote_get( $request_url, $request_args );
+
         if ( 200 !== \wp_remote_retrieve_response_code( $response ) ) {
             ( new Logger() )->error( print_r( $response, true ) ); // phpcs:ignore
 
             return false;
         }
-
-        set_transient( 'test', json_decode( \wp_remote_retrieve_body( $response ) ), HOUR_IN_SECONDS * 2 );
 
         return json_decode( \wp_remote_retrieve_body( $response ) );
     }
