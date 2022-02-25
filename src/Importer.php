@@ -89,8 +89,9 @@ final class Importer {
         }
 
         foreach ( $list as $item ) {
-            $id = $this->run_oopi_import( $item );
+            $id = $item->import();
             if ( empty( $id ) ) {
+                ( new Logger() )->error( 'Error importing post x' );
                 continue;
             }
 
@@ -98,24 +99,6 @@ final class Importer {
         }
 
         update_option( 'tampere_news_last_import_time', $this->current_import_time );
-    }
-
-    /**
-     * Run oopi import.
-     *
-     * @param PostImportable $post
-     *
-     * @return int
-     */
-    public function run_oopi_import( PostImportable $post ) : int {
-        // Try to save the post.
-        try {
-            // If the data was invalid or errors occur while saving the post into the dabase, an exception is thrown.
-            return $post->import();
-        }
-        catch ( \Geniem\Oopi\Exception\PostException $e ) {
-            ( new Logger() )->error( $e->getMessage(), $e->getTraceAsString() );
-        }
     }
 
     /**

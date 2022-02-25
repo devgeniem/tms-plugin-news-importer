@@ -25,7 +25,7 @@ final class Cron {
     public function hooks() : void {
 
         // add_action( 'init', \Closure::fromCallable( [ $this, 'maybe_schedule_news_import' ] ) );
-        // add_action( 'init', \Closure::fromCallable( [ $this, 'init_import_handler' ] ) );
+        add_action( 'init', \Closure::fromCallable( [ $this, 'init_import_handler' ] ) );
         // add_action( self::CRON_HOOK, \Closure::fromCallable( [ $this, 'init_import_handler' ] ) );
     }
 
