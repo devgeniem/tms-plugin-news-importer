@@ -5,8 +5,6 @@
 
 namespace TMS\Plugin\NewsImporter;
 
-use TMS\Theme\Base\Logger;
-
 /**
  * NewsImporter Cron
  *
@@ -24,9 +22,8 @@ final class Cron {
      */
     public function hooks() : void {
 
-        // add_action( 'init', \Closure::fromCallable( [ $this, 'maybe_schedule_news_import' ] ) );
-        add_action( 'init', \Closure::fromCallable( [ $this, 'init_import_handler' ] ) );
-        // add_action( self::CRON_HOOK, \Closure::fromCallable( [ $this, 'init_import_handler' ] ) );
+        add_action( 'init', \Closure::fromCallable( [ $this, 'maybe_schedule_news_import' ] ) );
+        add_action( self::CRON_HOOK, \Closure::fromCallable( [ $this, 'init_import_handler' ] ) );
     }
 
     /**
@@ -48,6 +45,6 @@ final class Cron {
      * @return void
      */
     private function init_import_handler() : void {
-        ( new Importer() )->import_posts_to_main_site();
+        ( new Importer() )->import_posts();
     }
 }
