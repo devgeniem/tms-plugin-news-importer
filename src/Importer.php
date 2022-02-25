@@ -144,7 +144,7 @@ final class Importer {
                 ],
                 [
                     'key'   => 'wp_site_id',
-                    'value' => 32,
+                    'value' => 32, // @TODO: Replace by value from object
                 ],
                 [
                     'key'   => 'image_url',
