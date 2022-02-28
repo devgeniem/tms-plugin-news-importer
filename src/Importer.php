@@ -38,7 +38,51 @@ final class Importer {
     private function get_news() : array {
         $api  = new Api();
         $news = $api->get();
-        return $news;
+
+        if ( empty( $news ) ) {
+            return [];
+        }
+
+        $ids = [];
+
+        foreach ( $news as $item ) {
+            $object = new ImportObjectData( $item );
+            $object_id = $object->get_id() ?: null;
+
+            if ( empty( $object_id ) ) {
+                continue;
+            }
+
+            $ids[] = $object_id;
+        }
+
+        $existing_posts = new \WP_Query( [
+            'meta_query'    => [
+                [
+                    'key'   => 'drupal_post_id',
+                    'value' => $ids,
+                ]
+            ],
+            'lang' => [
+                'fi',
+                'en',
+            ],
+            'posts_per_page' => -1,
+        ] );
+
+        $existing_posts_data = [];
+
+        if ( $existing_posts->have_posts() ) {
+            foreach ( $existing_posts->posts as $item ) {
+                $drupal_post_id = get_post_meta( $item->ID, 'drupal_post_id', true ) ?: '';
+                $existing_posts_data[ $drupal_post_id ] = $item->ID;
+            }
+        }
+
+        return [
+            'api_posts'      => $news,
+            'existing_posts' => $existing_posts_data,
+        ];
     }
 
     /**
@@ -58,17 +102,21 @@ final class Importer {
         $this->last_import_time = get_option( 'tampere_news_last_import_time' ) ?: null;
         $this->current_import_time = date( 'Y-m-d H:i:s' );
 
-        foreach ( $news as $object ) {
+        foreach ( $news['api_posts'] as $object ) {
+            $object                 = new ImportObjectData( $object );
+            $object_id              = $object->get_id();
+            $post_modified_date     = $object->get_changed_time();
+            $post_modified_date_gmt = ( new \DateTime( $post_modified_date ) )->format( 'Y-m-d H:i:s' );
 
-            $object        = new ImportObjectData( $object );
-            $post_date     = $object->get_changed_time() ?: $object->get_created_time();
-            $post_date_gmt = ( new \DateTime( $post_date ) )->format( 'Y-m-d H:i:s' );
-    
-            if ( ! empty( $this->last_import_time ) && $this->last_import_time > $post_date_gmt ) {
+            if (
+                ! empty( $this->last_import_time )
+                && $this->last_import_time > $post_modified_date_gmt
+                && array_key_exists( $object_id, $news['existing_posts'] )
+            ) {
                 continue;
             }
 
-            $list[] = $this->create_importable_object( $object );
+            $list[ $object_id ] = $this->create_importable_object( $object );
         }
 
         return $list;
@@ -88,10 +136,11 @@ final class Importer {
             return;
         }
 
-        foreach ( $list as $item ) {
+        foreach ( $list as $key => $item ) {
+
             $id = $item->import();
             if ( empty( $id ) ) {
-                ( new Logger() )->error( 'Error importing post x' );
+                ( new Logger() )->error( 'Oopi error: Unable to import post ' . $key );
                 continue;
             }
 
@@ -109,8 +158,11 @@ final class Importer {
      * @return PostImportable
      */
     public function create_importable_object( object $import_object ) : PostImportable {
-        $post_date     = $import_object->get_changed_time() ?: $import_object->get_created_time();
+        $post_date     = $import_object->get_created_time();
         $post_date_gmt = ( new \DateTime( $post_date ) )->format( 'Y-m-d H:i:s' );
+
+        $post_modified_date     = $import_object->get_changed_time();
+        $post_modified_date_gmt = ( new \DateTime( $post_modified_date ) )->format( 'Y-m-d H:i:s' );
 
         $lang_code = $import_object->get_langcode() ?: 'fi';
 
@@ -126,13 +178,14 @@ final class Importer {
         // Set the basic post data as an associative array and cast it to object.
         $post->set_post( new \WP_Post(
             (object) [
-                'post_title'    => $import_object->get_title(),
-                'post_name'     => sanitize_title( $import_object->get_title() ),
-                'post_type'     => 'post',
-                'post_content'  => $import_object->get_content(),
-                'post_excerpt'  => $import_object->get_lead_text(),
-                'post_date_gmt' => $post_date_gmt,
-                'post_status'   => 'private',
+                'post_title'        => $import_object->get_title(),
+                'post_name'         => sanitize_title( $import_object->get_title() ),
+                'post_type'         => 'post',
+                'post_content'      => $import_object->get_content(),
+                'post_excerpt'      => $import_object->get_lead_text(),
+                'post_date_gmt'     => $post_date_gmt,
+                'post_modified_gmt' => $post_modified_date_gmt,
+                'post_status'       => 'private',
             ]
         ) );
 
@@ -169,6 +222,7 @@ final class Importer {
         $target_site    = get_post_meta( $id, 'wp_site_id', true );
         $drupal_post_id = get_post_meta( $id, 'drupal_post_id', true );
         $image_url      = get_post_meta( $id, 'image_url', true );
+        $post_lang      = pll_get_post_language( $id );
 
         switch_to_blog( $target_site );
 
@@ -192,7 +246,7 @@ final class Importer {
             'post_excerpt'  => $post_in_main_site->post_excerpt,
             'post_date'     => $post_in_main_site->post_date,
             'post_status'   => 'publish',
-            'meta_input'   => [
+            'meta_input'    => [
                 'drupal_post_id' => $drupal_post_id,
                 'wp_site_id'     => $target_site,
                 'image_url'      => $image_url,
@@ -202,6 +256,8 @@ final class Importer {
         if ( empty( $post_id ) || $post_id instanceof \WP_Error ) {
             ( new Logger() )->error( 'Error creating or updating a post in site ' . $target_site . 'with drupal id ' . $drupal_post_id );
         }
+
+        pll_set_post_language( $post_id, $post_lang );
 
         restore_current_blog();
     }
