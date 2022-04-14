@@ -46,7 +46,7 @@ final class Importer {
         $ids = [];
 
         foreach ( $news as $item ) {
-            $object = new ImportObjectData( $item );
+            $object    = new ImportObjectData( $item );
             $object_id = $object->get_id() ?: null;
 
             if ( empty( $object_id ) ) {
@@ -57,13 +57,13 @@ final class Importer {
         }
 
         $existing_posts = new \WP_Query( [
-            'meta_query'    => [
+            'meta_query'     => [
                 [
                     'key'   => 'drupal_post_id',
                     'value' => $ids,
-                ]
+                ],
             ],
-            'lang' => [
+            'lang'           => [
                 'fi',
                 'en',
             ],
@@ -74,7 +74,7 @@ final class Importer {
 
         if ( $existing_posts->have_posts() ) {
             foreach ( $existing_posts->posts as $item ) {
-                $drupal_post_id = get_post_meta( $item->ID, 'drupal_post_id', true ) ?: '';
+                $drupal_post_id                         = get_post_meta( $item->ID, 'drupal_post_id', true ) ?: '';
                 $existing_posts_data[ $drupal_post_id ] = $item->ID;
             }
         }
@@ -99,7 +99,7 @@ final class Importer {
             return $list;
         }
 
-        $this->last_import_time = get_option( 'tampere_news_last_import_time' ) ?: null;
+        $this->last_import_time    = get_option( 'tampere_news_last_import_time' ) ?: null;
         $this->current_import_time = date( 'Y-m-d H:i:s' );
 
         foreach ( $news['api_posts'] as $object ) {
@@ -125,7 +125,7 @@ final class Importer {
     /**
      * Import posts.
      *
-     * @return void  
+     * @return void
      */
     public function import_posts() : void {
 
@@ -189,6 +189,8 @@ final class Importer {
             ]
         ) );
 
+        $wp_site_id = serialize( $import_object->get_target_sites() );
+
         $post->set_meta(
             [
                 [
@@ -197,7 +199,7 @@ final class Importer {
                 ],
                 [
                     'key'   => 'wp_site_id',
-                    'value' => 32, // @TODO: Replace by value from object
+                    'value' => $wp_site_id,
                 ],
                 [
                     'key'   => 'image_url',
@@ -205,7 +207,7 @@ final class Importer {
                 ],
             ]
         );
-        
+
         return $post;
     }
 
@@ -214,51 +216,54 @@ final class Importer {
      *
      * @param int $id
      *
-     * @return void 
+     * @return void
      */
     public function insert_post( int $id ) : void {
 
         $post_in_main_site = get_post( $id );
-        $target_site    = get_post_meta( $id, 'wp_site_id', true );
-        $drupal_post_id = get_post_meta( $id, 'drupal_post_id', true );
-        $image_url      = get_post_meta( $id, 'image_url', true );
-        $post_lang      = pll_get_post_language( $id );
+        $target_site       = unserialize( get_post_meta( $id, 'wp_site_id', true ) );
+        $drupal_post_id    = get_post_meta( $id, 'drupal_post_id', true );
+        $image_url         = get_post_meta( $id, 'image_url', true );
+        $post_lang         = pll_get_post_language( $id );
 
-        switch_to_blog( $target_site );
 
-        $post_id_in_target_site = new \WP_Query( [
-                'meta_query'    => [
+        foreach ( $target_site as $site ) {
+            switch_to_blog( $site );
+
+            $post_id_in_target_site = new \WP_Query( [
+                'meta_query'     => [
                     [
                         'key'   => 'drupal_post_id',
-                        'value' => $drupal_post_id
-                    ]
+                        'value' => $drupal_post_id,
+                    ],
                 ],
                 'posts_per_page' => '1',
                 'fields'         => 'ids',
-        ] );
-
-        $post_id_in_target_site = ! empty( $post_id_in_target_site->posts[0] ) ? $post_id_in_target_site->posts[0] : 0;
-
-        $post_id = wp_insert_post( [
-            'ID'            => $post_id_in_target_site,
-            'post_title'    => $post_in_main_site->post_title,
-            'post_content'  => $post_in_main_site->post_content,
-            'post_excerpt'  => $post_in_main_site->post_excerpt,
-            'post_date'     => $post_in_main_site->post_date,
-            'post_status'   => 'publish',
-            'meta_input'    => [
-                'drupal_post_id' => $drupal_post_id,
-                'wp_site_id'     => $target_site,
-                'image_url'      => $image_url,
-            ],
-        ] );
-
-        if ( empty( $post_id ) || $post_id instanceof \WP_Error ) {
-            ( new Logger() )->error( 'Error creating or updating a post in site ' . $target_site . 'with drupal id ' . $drupal_post_id );
+            ] );
+    
+            $post_id_in_target_site = ! empty( $post_id_in_target_site->posts[0] ) ? $post_id_in_target_site->posts[0] : 0;
+    
+            $post_id = wp_insert_post( [
+                'ID'           => $post_id_in_target_site,
+                'post_title'   => $post_in_main_site->post_title,
+                'post_content' => $post_in_main_site->post_content,
+                'post_excerpt' => $post_in_main_site->post_excerpt,
+                'post_date'    => $post_in_main_site->post_date,
+                'post_status'  => 'publish',
+                'meta_input'   => [
+                    'drupal_post_id' => $drupal_post_id,
+                    'wp_site_id'     => $site,
+                    'image_url'      => $image_url,
+                ],
+            ] );
+    
+            if ( empty( $post_id ) || $post_id instanceof \WP_Error ) {
+                ( new Logger() )->error( 'Error creating or updating a post in site ' . $target_site . 'with drupal id ' . $drupal_post_id );
+            }
+    
+            pll_set_post_language( $post_id, $post_lang );
+    
+            restore_current_blog();
         }
-
-        pll_set_post_language( $post_id, $post_lang );
-
-        restore_current_blog();
     }
 }

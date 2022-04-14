@@ -122,6 +122,6 @@ final class NewsImporterPlugin {
      * Init classes
      */
     protected function init_classes() {
-        ( new Cron())->hooks();
+        ( new Cron() )->hooks();
     }
 }

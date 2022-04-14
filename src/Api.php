@@ -50,7 +50,6 @@ final class Api {
 
         if ( 200 !== \wp_remote_retrieve_response_code( $response ) ) {
             ( new Logger() )->error( print_r( $response, true ) ); // phpcs:ignore
-
             return false;
         }
 
@@ -87,7 +86,24 @@ final class Api {
             $args['headers']['Authorization'] = 'Basic ' . base64_encode( $basic_auth_key ); // phpcs:ignore
         }
 
-        return $this->do_get( [], [], $args );
+        $params = [
+            'filter' => [ 
+                'published' => [
+                    'condition' => [
+                        'path'  => 'status',
+                        'value' => '1',
+                    ],
+                ],
+                'publications' => [
+                    'condition' => [
+                        'path'     => 'field_cross_site_publications',
+                        'operator' => 'IS%20NOT%20NULL',
+                    ],
+                ],
+            ],
+        ];
+
+        return $this->do_get( [], $params, $args );
     }
 
     /**

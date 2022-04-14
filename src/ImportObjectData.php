@@ -97,4 +97,25 @@ class ImportObjectData {
     public function get_image() {
         return $this->object_data->field_main_image->links->self->href ?: '';
     }
+
+    /**
+     * Get target sites.
+     *
+     * @return array
+     */
+    public function get_target_sites() {
+        $sites = $this->object_data->field_cross_site_publications;
+
+        if ( empty( $sites ) ) {
+            return [];
+        }
+
+        $target_sites = [];
+
+        foreach ( $sites as $site ) {
+            $target_sites[] = $site->field_site_id;
+        }
+
+        return $target_sites;
+    }
 }
