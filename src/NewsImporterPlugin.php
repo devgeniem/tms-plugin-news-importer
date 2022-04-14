@@ -109,6 +109,7 @@ final class NewsImporterPlugin {
         $this->plugin_uri  = plugin_dir_url( $plugin_path ) . basename( $this->plugin_path );
 
         $this->hooks();
+        $this->init_cli_commands();
     }
 
     /**
@@ -123,5 +124,21 @@ final class NewsImporterPlugin {
      */
     protected function init_classes() {
         ( new Cron() )->hooks();
+    }
+
+    /**
+     * Add the WP CLI commands.
+     *
+     * @return void
+     */
+    protected function init_cli_commands() : void {
+        if ( ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+            \WP_CLI::add_command(
+                'news import',
+                function() {
+                    ( new Importer() )->import_posts();
+                }
+            );
+        }
     }
 }
