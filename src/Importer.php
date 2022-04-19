@@ -281,9 +281,18 @@ final class Importer {
      * @return void
      */
     private function generate_featured_image( string $image_url, int $post_id ) : void {
-        $upload_dir = wp_upload_dir();
-        $image_data = file_get_contents( $image_url );
+        $basic_auth_key = env( 'TAMPERE_API_AUTH' );
+        $context        = stream_context_create(
+            [
+                "http" => [
+                    "header" => 'Authorization: Basic ' . base64_encode( $basic_auth_key ),
+                ],
+            ]
+        );
+
+        $image_data = file_get_contents( $image_url, false, $context );
         $filename   = basename( $image_url );
+        $upload_dir = wp_upload_dir();
         $file       = wp_mkdir_p( $upload_dir['path'] ) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
 
         file_put_contents( $file, $image_data );
