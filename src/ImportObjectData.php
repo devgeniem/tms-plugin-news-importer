@@ -95,7 +95,9 @@ class ImportObjectData {
      * @return string
      */
     public function get_image() {
-        return $this->object_data->field_main_image->field_media_image->image_full_url ?: '';
+        $image = $this->object_data->field_main_image->field_media_image ?: null;
+
+        return empty( $image ) ? '' : $image->image_full_url;
     }
 
     /**

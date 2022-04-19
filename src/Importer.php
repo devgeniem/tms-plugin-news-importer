@@ -262,55 +262,8 @@ final class Importer {
             }
     
             pll_set_post_language( $post_id, $post_lang );
-
-            if ( ! empty( $image_url ) ) {
-                $this->generate_featured_image( $image_url, $post_id );
-            }
     
             restore_current_blog();
         }
-    }
-
-    /**
-     * Generate featured image.
-     *
-     * @param string $image_url
-     *
-     * @param int $post_id
-     *
-     * @return void
-     */
-    private function generate_featured_image( string $image_url, int $post_id ) : void {
-        $basic_auth_key = env( 'TAMPERE_API_AUTH' );
-        $context        = stream_context_create(
-            [
-                "http" => [
-                    "header" => 'Authorization: Basic ' . base64_encode( $basic_auth_key ),
-                ],
-            ]
-        );
-
-        $image_data = file_get_contents( $image_url, false, $context );
-        $filename   = basename( $image_url );
-        $upload_dir = wp_upload_dir();
-        $file       = wp_mkdir_p( $upload_dir['path'] ) ? $upload_dir['path'] . '/' . $filename : $upload_dir['basedir'] . '/' . $filename;
-
-        file_put_contents( $file, $image_data );
-
-        $wp_filetype = wp_check_filetype( $filename, null );
-        $attachment  = [
-            'post_mime_type' => $wp_filetype['type'],
-            'post_title'     => sanitize_file_name( $filename ),
-            'post_content'   => '',
-            'post_status'    => 'inherit',
-        ];
-        $attach_id   = wp_insert_attachment( $attachment, $file, $post_id );
-
-        require_once( ABSPATH . 'wp-admin/includes/image.php' );
-
-        $attach_data = wp_generate_attachment_metadata( $attach_id, $file );
-
-        wp_update_attachment_metadata( $attach_id, $attach_data );
-        set_post_thumbnail( $post_id, $attach_id );
     }
 }
