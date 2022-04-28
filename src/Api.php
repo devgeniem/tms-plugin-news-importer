@@ -29,17 +29,19 @@ final class Api {
      * @param array  $params       Request query parameters.
      * @param array  $request_args Request args.
      * @param string $endpoint     Api endpoint.
+     * @param string $next_page    Next page of the results.
      *
      * @return bool|mixed
      */
-    public function do_request( array $params = [], array $request_args = [], $endpoint ) {
+    public function do_request( array $params = [], array $request_args = [], $endpoint, $next_page = '' ) {
         $base_url = $this->get_api_base_url() . $endpoint;
 
         if ( empty( $base_url ) ) {
             return false;
         }
 
-        $request_url = \add_query_arg(
+
+        $request_url = ! empty( $next_page ) ? $next_page : \add_query_arg(
             $params,
             sprintf(
                 '%s/?',
@@ -71,12 +73,11 @@ final class Api {
     /**
      * Get all pages from API
      *
-     * @param array  $params Query params.
      * @param string $lang_code Language code.
      *
      * @return array
      */
-    public function get( array $params = [], $lang_code = 'fi' ) {
+    public function get( $lang_code = 'fi' ) {
         $args = [
             'headers' => [
                 'Content-Type' => 'application/vnd.api+json',
@@ -90,8 +91,8 @@ final class Api {
             $args['headers']['Authorization'] = 'Basic ' . base64_encode( $basic_auth_key ); // phpcs:ignore
         }
 
-        $default_params = [
-            'filter' => [ 
+        $params = [
+            'filter' => [
                 'published' => [
                     'condition' => [
                         'path'  => 'status',
@@ -105,9 +106,20 @@ final class Api {
                     ],
                 ],
             ],
+            'page'    => [
+                'limit' => 50,
+                'offset' => 0,
+            ],
         ];
 
-        $params = array_merge( $default_params, $params );
+        if ( $lang_code === 'en' ) {
+            $params['filter']['lang'] = [
+                'condition' => [
+                    'path'  => 'langcode',
+                    'value' => 'en',
+                ],
+            ];
+        }
 
         $endpoint = $lang_code === 'fi' ? 'api/node/news_item' : 'en/api/node/news_item';
 
@@ -117,28 +129,27 @@ final class Api {
     /**
      * Recursively get all pages from API.
      *
-     * @param array  $data     Fetched persons.
-     * @param array  $params   Query params.
-     * @param array  $args     Request arguments.
-     * @param string $endpoint Api endpoint.
+     * @param array  $data      Fetched persons.
+     * @param array  $params    Query params.
+     * @param array  $args      Request arguments.
+     * @param string $endpoint  Api endpoint.
+     * @param string $next_page Next page of the results.
      *
      * @return array
      */
-    protected function do_get( array $data = [], array $params = [], array $args = [], $endpoint ) {
-        $response = $this->do_request( $params, $args, $endpoint );
+    protected function do_get( array $data = [], array $params = [], array $args = [], $endpoint, $next_page = '' ) {
+        $response = $this->do_request( $params, $args, $endpoint, $next_page );
 
         if ( ! $this->is_valid_response( $response ) ) {
             return $data;
         }
 
-        $data        = array_merge( $data, $response->data ?? [] );
-        $query_parts = $this->get_link_query_parts(
-            $response->links->next->href ?? ''
-        );
+        $data      = array_merge( $data, $response->data ?? [] );
+        $next_page = $response->links->next->href ?? '';
 
-        return empty( $query_parts )
+        return empty( $next_page )
             ? $data
-            : $this->do_get( $data, $query_parts ?? [], $args );
+            : $this->do_get( $data, [], $args, $endpoint, $next_page );
     }
 
     /**

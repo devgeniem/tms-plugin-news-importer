@@ -36,23 +36,11 @@ final class Importer {
      * @return array
      */
     private function get_news() : array {
-        $api  = new Api();
-        $news = $api->get();
-        $en_news = $api->get(
-            [
-                'filter' => [ 
-                    'published' => [
-                        'condition' => [
-                            'path'  => 'langcode',
-                            'value' => 'en',
-                        ],
-                    ],
-                ],
-            ],
-            'en'
-        );
+        $api     = new Api();
+        $news    = $api->get();
+        $en_news = $api->get( 'en' );
 
-        $news = array_merge( $news, $en_news );
+        $news = array_merge_recursive( $news, $en_news );
 
         if ( empty( $news ) ) {
             return [];
@@ -72,6 +60,7 @@ final class Importer {
         }
 
         $existing_posts = new \WP_Query( [
+            'post_status'    => 'private',
             'meta_query'     => [
                 [
                     'key'   => 'drupal_post_id',
@@ -152,8 +141,8 @@ final class Importer {
         }
 
         foreach ( $list as $key => $item ) {
-
             $id = $item->import();
+
             if ( empty( $id ) ) {
                 ( new Logger() )->error( 'Oopi error: Unable to import post ' . $key );
                 continue;
@@ -220,6 +209,14 @@ final class Importer {
                     'key'   => 'image_url',
                     'value' => $import_object->get_image(),
                 ],
+                [
+                    'key'   => 'writing_credits',
+                    'value' => $import_object->get_writing_credits(),
+                ],
+                [
+                    'key'   => 'image_credits',
+                    'value' => $import_object->get_image_credits(),
+                ],
             ]
         );
 
@@ -240,6 +237,8 @@ final class Importer {
         $drupal_post_id    = get_post_meta( $id, 'drupal_post_id', true );
         $image_url         = get_post_meta( $id, 'image_url', true );
         $post_lang         = pll_get_post_language( $id );
+        $writing_credits   = get_post_meta( $id, 'writing_credits', true );
+        $image_credits     = get_post_meta( $id, 'image_credits', true );
 
 
         foreach ( $target_site as $site ) {
@@ -257,7 +256,7 @@ final class Importer {
             ] );
     
             $post_id_in_target_site = ! empty( $post_id_in_target_site->posts[0] ) ? $post_id_in_target_site->posts[0] : 0;
-    
+  
             $post_id = wp_insert_post( [
                 'ID'           => $post_id_in_target_site,
                 'post_title'   => $post_in_main_site->post_title,
@@ -266,9 +265,11 @@ final class Importer {
                 'post_date'    => $post_in_main_site->post_date,
                 'post_status'  => 'publish',
                 'meta_input'   => [
-                    'drupal_post_id' => $drupal_post_id,
-                    'wp_site_id'     => $site,
-                    'image_url'      => $image_url,
+                    'drupal_post_id'  => $drupal_post_id,
+                    'wp_site_id'      => $site,
+                    'image_url'       => $image_url,
+                    'writing_credits' => $writing_credits,
+                    'image_credits'   => $image_credits,
                 ],
             ] );
     

@@ -32,7 +32,9 @@ class ImportObjectData {
      * @return string
      */
     public function get_id() {
-        return $this->object_data->id ?: '';
+        return $this->object_data->id
+               ? $this->object_data->langcode . '_' . $this->object_data->id
+               : '';
     }
 
     /**
@@ -119,5 +121,23 @@ class ImportObjectData {
         }
 
         return $target_sites;
+    }
+
+    /**
+     * Get writing_credits
+     *
+     * @return string
+     */
+    public function get_writing_credits() {
+        return $this->object_data->field_author ?: '';
+    }
+
+    /**
+     * Get image_credits
+     *
+     * @return string
+     */
+    public function get_image_credits() {
+        return $this->object_data->field_main_image->field_author ?: '';
     }
 }
