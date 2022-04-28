@@ -38,6 +38,21 @@ final class Importer {
     private function get_news() : array {
         $api  = new Api();
         $news = $api->get();
+        $en_news = $api->get(
+            [
+                'filter' => [ 
+                    'published' => [
+                        'condition' => [
+                            'path'  => 'langcode',
+                            'value' => 'en',
+                        ],
+                    ],
+                ],
+            ],
+            'en'
+        );
+
+        $news = array_merge( $news, $en_news );
 
         if ( empty( $news ) ) {
             return [];

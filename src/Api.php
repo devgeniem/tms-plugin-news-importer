@@ -26,13 +26,14 @@ final class Api {
     /**
      * Do an API request
      *
-     * @param array $params       Request query parameters.
-     * @param array $request_args Request args.
+     * @param array  $params       Request query parameters.
+     * @param array  $request_args Request args.
+     * @param string $endpoint     Api endpoint.
      *
      * @return bool|mixed
      */
-    public function do_request( array $params = [], array $request_args = [] ) {
-        $base_url = $this->get_api_base_url();
+    public function do_request( array $params = [], array $request_args = [], $endpoint ) {
+        $base_url = $this->get_api_base_url() . $endpoint;
 
         if ( empty( $base_url ) ) {
             return false;
@@ -70,9 +71,12 @@ final class Api {
     /**
      * Get all pages from API
      *
+     * @param array  $params Query params.
+     * @param string $lang_code Language code.
+     *
      * @return array
      */
-    public function get() {
+    public function get( array $params = [], $lang_code = 'fi' ) {
         $args = [
             'headers' => [
                 'Content-Type' => 'application/vnd.api+json',
@@ -86,7 +90,7 @@ final class Api {
             $args['headers']['Authorization'] = 'Basic ' . base64_encode( $basic_auth_key ); // phpcs:ignore
         }
 
-        $params = [
+        $default_params = [
             'filter' => [ 
                 'published' => [
                     'condition' => [
@@ -103,20 +107,25 @@ final class Api {
             ],
         ];
 
-        return $this->do_get( [], $params, $args );
+        $params = array_merge( $default_params, $params );
+
+        $endpoint = $lang_code === 'fi' ? 'api/node/news_item' : 'en/api/node/news_item';
+
+        return $this->do_get( [], $params, $args, $endpoint );
     }
 
     /**
      * Recursively get all pages from API.
      *
-     * @param array $data   Fetched persons.
-     * @param array $params Query params.
-     * @param array $args   Request arguments.
+     * @param array  $data     Fetched persons.
+     * @param array  $params   Query params.
+     * @param array  $args     Request arguments.
+     * @param string $endpoint Api endpoint.
      *
      * @return array
      */
-    protected function do_get( array $data = [], array $params = [], array $args = [] ) {
-        $response = $this->do_request( $params, $args );
+    protected function do_get( array $data = [], array $params = [], array $args = [], $endpoint ) {
+        $response = $this->do_request( $params, $args, $endpoint );
 
         if ( ! $this->is_valid_response( $response ) ) {
             return $data;
