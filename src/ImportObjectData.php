@@ -5,6 +5,8 @@
 
 namespace TMS\Plugin\NewsImporter;
 
+use Symfony\Component\DomCrawler\Crawler;
+
 /**
  * Class ImportObjectData
  */
@@ -88,7 +90,9 @@ class ImportObjectData {
      * @return string
      */
     public function get_content() {
-        return empty( $this->object_data->field_body ) ? '' : $this->object_data->field_body->processed;
+        return empty( $this->object_data->field_body )
+               ? ''
+               : $this->handle_links( $this->object_data->field_body->processed );
     }
 
     /**
@@ -139,5 +143,33 @@ class ImportObjectData {
      */
     public function get_image_credits() {
         return $this->object_data->field_main_image->field_author ?: '';
+    }
+
+    /**
+     * Handle links
+     *
+     * @param string $content Article content.
+     *
+     * @return string
+     */
+    private function handle_links( string $content ) : string {
+        $nodes       = new Crawler( $content );
+        $replace_map = [];
+
+        $nodes->filter( 'a' )->each( function ( Crawler $link ) use ( &$replace_map ) {
+            $href = $link->attr( 'href' );
+
+            if ( ! isset( parse_url( $href )['host'] ) ) {
+                $replace_map[ $link->attr( 'href' ) ] = "https://www.tampere.fi${href}";
+            }
+        } );
+
+        if ( ! empty( $replace_map ) ) {
+            foreach ( $replace_map as $find => $replace ) {
+                $content = str_replace( $find, $replace, $content );
+            }
+        }
+
+        return $content;
     }
 }
