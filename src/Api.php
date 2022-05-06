@@ -91,35 +91,7 @@ final class Api {
             $args['headers']['Authorization'] = 'Basic ' . base64_encode( $basic_auth_key ); // phpcs:ignore
         }
 
-        $params = [
-            'filter' => [
-                'published' => [
-                    'condition' => [
-                        'path'  => 'status',
-                        'value' => '1',
-                    ],
-                ],
-                'publications' => [
-                    'condition' => [
-                        'path'     => 'field_cross_site_publications',
-                        'operator' => 'IS%20NOT%20NULL',
-                    ],
-                ],
-            ],
-            'page'    => [
-                'limit' => 50,
-                'offset' => 0,
-            ],
-        ];
-
-        if ( $lang_code === 'en' ) {
-            $params['filter']['lang'] = [
-                'condition' => [
-                    'path'  => 'langcode',
-                    'value' => 'en',
-                ],
-            ];
-        }
+        $params = $this->get_params( $lang_code );
 
         $endpoint = $lang_code === 'fi' ? 'api/node/news_item' : 'en/api/node/news_item';
 
@@ -153,21 +125,46 @@ final class Api {
     }
 
     /**
-     * Get query params from link
+     * Get params.
      *
-     * @param string $href Link.
+     * @param string $lang_code Language code.
      *
-     * @return array
+     * @return array Array of params.
      */
-    private function get_link_query_parts( string $href ) : array {
-        $parts = wp_parse_url( $href );
+    private function get_params( string $lang_code ) : array {
+        $params = [
+            'filter' => [
+                'published' => [
+                    'condition' => [
+                        'path'  => 'status',
+                        'value' => '1',
+                    ],
+                ],
+                'publications' => [
+                    'condition' => [
+                        'path'     => 'field_cross_site_publications',
+                        'operator' => 'IS%20NOT%20NULL',
+                    ],
+                ],
+            ],
+            'page'    => [
+                'limit' => 50,
+                'offset' => 0,
+            ],
+        ];
 
-        if ( ! isset( $parts['query'] ) ) {
-            return [];
+
+        if ( $lang_code === 'fi' ) {
+            return $params;
         }
 
-        parse_str( $parts['query'], $query_parts );
+        $params['filter']['lang'] = [
+            'condition' => [
+                'path'  => 'langcode',
+                'value' => 'en',
+            ],
+        ];
 
-        return $query_parts;
+        return $params;
     }
 }

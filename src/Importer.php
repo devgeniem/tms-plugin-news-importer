@@ -276,6 +276,8 @@ final class Importer {
             if ( empty( $post_id ) || $post_id instanceof \WP_Error ) {
                 ( new Logger() )->error( 'Error creating or updating a post in site ' . $target_site . 'with drupal id ' . $drupal_post_id );
             }
+
+            wp_set_object_terms( $post_id_in_target_site, $post_lang === 'fi' ? 'Uutinen' : 'News', 'category' );
     
             pll_set_post_language( $post_id, $post_lang );
     

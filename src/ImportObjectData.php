@@ -90,9 +90,9 @@ class ImportObjectData {
      * @return string
      */
     public function get_content() {
-        return empty( $this->object_data->field_body )
+        return empty( $this->object_data->field_markup )
                ? ''
-               : $this->handle_links( $this->object_data->field_body->processed );
+               : $this->handle_content( $this->object_data->field_markup->markup );
     }
 
     /**
@@ -146,23 +146,33 @@ class ImportObjectData {
     }
 
     /**
-     * Handle links
+     * Handle content
      *
      * @param string $content Article content.
      *
      * @return string
      */
-    private function handle_links( string $content ) : string {
+    public static function handle_content( string $content ) : string {
         $nodes       = new Crawler( $content );
         $replace_map = [];
 
         $nodes->filter( 'a' )->each( function ( Crawler $link ) use ( &$replace_map ) {
-            $href = $link->attr( 'href' );
+            $href        = $link->attr( 'href' );
+            $parsed_href = parse_url( $href );
 
-            if ( ! isset( parse_url( $href )['host'] ) ) {
+            if ( ! isset( $parsed_href['host'] ) && ! isset( $parsed_href['fragment'] ) ) {
                 $replace_map[ $link->attr( 'href' ) ] = "https://www.tampere.fi${href}";
             }
         } );
+
+        // remove content-img__heading class
+        $nodes->filter('div.content-img__heading')->each( function ( Crawler $crawler ) {
+            foreach ( $crawler as $node ) {
+                $node->parentNode->removeChild( $node );
+            }
+        });
+
+        $content = $nodes->filter( 'body' )->html();
 
         if ( ! empty( $replace_map ) ) {
             foreach ( $replace_map as $find => $replace ) {
