@@ -152,10 +152,11 @@ class ImportObjectData {
      *
      * @return string
      */
-    public static function handle_content( string $content ) : string {
+    private function handle_content( string $content ) : string {
         $nodes       = new Crawler( $content );
         $replace_map = [];
 
+        // modify relative links
         $nodes->filter( 'a' )->each( function ( Crawler $link ) use ( &$replace_map ) {
             $href        = $link->attr( 'href' );
             $parsed_href = parse_url( $href );
@@ -165,12 +166,12 @@ class ImportObjectData {
             }
         } );
 
-        // remove content-img__heading class
-        $nodes->filter('div.content-img__heading')->each( function ( Crawler $crawler ) {
+        // remove some divs
+        $nodes->filter('div.content-img__heading, .node-title, .field-lead, .content-img')->each( function ( Crawler $crawler ) {
             foreach ( $crawler as $node ) {
                 $node->parentNode->removeChild( $node );
             }
-        });
+        } );
 
         $content = $nodes->filter( 'body' )->html();
 
@@ -179,6 +180,15 @@ class ImportObjectData {
                 $content = str_replace( $find, $replace, $content );
             }
         }
+
+        $article_tag_replacements = [
+            '<article'  => '<div',
+            '</article' => '</div',
+        ];
+
+        foreach ( $article_tag_replacements as $find => $replace ) {
+            $content = str_replace( $find, $replace, $content );
+        } 
 
         return $content;
     }
