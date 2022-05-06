@@ -152,18 +152,41 @@ class ImportObjectData {
      *
      * @return string
      */
-    private function handle_content( string $content ) : string {
+    public static function handle_content( string $content ) : string {
         $nodes       = new Crawler( $content );
         $replace_map = [];
 
-        // modify relative links
-        $nodes->filter( 'a' )->each( function ( Crawler $link ) use ( &$replace_map ) {
-            $href        = $link->attr( 'href' );
-            $parsed_href = parse_url( $href );
+        $url_prefix = defined( 'WP_ENV' ) && WP_ENV && WP_ENV === 'production'
+                    ? 'https://www.tampere.fi'
+                    : 'https://staging.tampere.fi';
 
-            if ( ! isset( $parsed_href['host'] ) && ! isset( $parsed_href['fragment'] ) ) {
-                $replace_map[ $link->attr( 'href' ) ] = "https://www.tampere.fi${href}";
+        // modify relative urls
+        $nodes->filter( 'a, img, source, iframe' )->each( function ( Crawler $node ) use ( &$replace_map, $url_prefix ) {
+            
+            $url  = '';
+            $attr = '';
+
+            if ( ! empty( $node->attr( 'href' ) ) ) {
+                $url  = $node->attr( 'href' );
+                $attr = 'href';
             }
+
+            if ( ! empty( $node->attr( 'src' ) ) ) {
+                $url  = $node->attr( 'src' );
+                $attr = 'src';
+            }
+
+            if ( ! empty( $node->attr( 'srcset' ) ) ) {
+                $url  = $node->attr( 'srcset' );
+                $attr = 'srcset';
+            }
+
+            $parsed_url = parse_url( $url );
+
+            if ( ! isset( $parsed_url['host'] ) && ! isset( $parsed_url['fragment'] ) ) {
+                $replace_map[ $node->attr( $attr ) ] = "${url_prefix}${url}";
+            }
+
         } );
 
         // remove some divs
