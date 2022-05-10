@@ -183,9 +183,15 @@ class ImportObjectData {
 
             if ( ! isset( $parsed_url['host'] ) && ! isset( $parsed_url['fragment'] ) ) {
                 $node_name = $node->nodeName();
-                parse_str( $parsed_url['query'], $query );
-                $key   = $node_name === 'iframe' ? $node->outerHtml() : $url;
-                $value = $node_name === 'iframe' ? wp_oembed_get( $query['url'] ?? '' ) : "${url_prefix}${url}";
+                $key       = $url;
+                $value     = "${url_prefix}${url}";
+
+                if ( $node_name === 'iframe' ) {
+                    parse_str( $parsed_url['query'], $query );
+                    $key   = $node->outerHtml();
+                    $value = wp_oembed_get( $query['url'] ?? '' );
+                }
+
                 $replace_map[ $key ] = $value;
             }
 
