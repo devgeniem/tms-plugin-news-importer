@@ -152,7 +152,7 @@ class ImportObjectData {
      *
      * @return string
      */
-    public static function handle_content( string $content ) : string {
+    private function handle_content( string $content ) : string {
         $nodes       = new Crawler( $content );
         $replace_map = [];
 
@@ -164,27 +164,29 @@ class ImportObjectData {
         $nodes->filter( 'a, img, source, iframe' )->each( function ( Crawler $node ) use ( &$replace_map, $url_prefix ) {
             
             $url  = '';
-            $attr = '';
 
             if ( ! empty( $node->attr( 'href' ) ) ) {
                 $url  = $node->attr( 'href' );
-                $attr = 'href';
             }
 
             if ( ! empty( $node->attr( 'src' ) ) ) {
                 $url  = $node->attr( 'src' );
-                $attr = 'src';
             }
 
             if ( ! empty( $node->attr( 'srcset' ) ) ) {
                 $url  = $node->attr( 'srcset' );
-                $attr = 'srcset';
             }
 
             $parsed_url = parse_url( $url );
 
+            $url = htmlspecialchars( $url );
+
             if ( ! isset( $parsed_url['host'] ) && ! isset( $parsed_url['fragment'] ) ) {
-                $replace_map[ $node->attr( $attr ) ] = "${url_prefix}${url}";
+                $node_name = $node->nodeName();
+                parse_str( $parsed_url['query'], $query );
+                $key   = $node_name === 'iframe' ? $node->outerHtml() : $url;
+                $value = $node_name === 'iframe' ? wp_oembed_get( $query['url'] ?? '' ) : "${url_prefix}${url}";
+                $replace_map[ $key ] = $value;
             }
 
         } );
@@ -211,7 +213,7 @@ class ImportObjectData {
 
         foreach ( $article_tag_replacements as $find => $replace ) {
             $content = str_replace( $find, $replace, $content );
-        } 
+        }
 
         return $content;
     }
