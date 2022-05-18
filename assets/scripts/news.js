@@ -39,7 +39,8 @@ class News {
 
         this.exoveContent.find( 'use' ).each( function() {
             const xlinkHref = $( this ).attr( 'xlink:href' );
-            $( this ).attr( 'xlink:href', `${exoveData.urlPrefix}${xlinkHref}` );
+            const iconName  = xlinkHref.substr( xlinkHref.indexOf( '#' ) );
+            $( this ).attr( 'xlink:href', `${exoveData.iconsPath}${iconName}` );
         } );
     }
 

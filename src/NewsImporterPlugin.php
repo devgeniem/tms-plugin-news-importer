@@ -156,7 +156,7 @@ final class NewsImporterPlugin {
                 'all'
             );
         }
-        
+
         $js_path = $this->plugin_path . '/assets/dist/public.js';
 
         if ( file_exists( $js_path ) ) {
@@ -168,12 +168,8 @@ final class NewsImporterPlugin {
                 true
             );
 
-            $url_prefix = defined( 'WP_ENV' ) && WP_ENV && WP_ENV === 'production'
-                        ? 'https://www.tampere.fi'
-                        : 'https://staging.tampere.fi';
-
             $localized_data = [
-                'urlPrefix' => $url_prefix,
+                'iconsPath' => $this->plugin_uri . '/assets/dist/exove-svgs.svg',
             ];
 
             \wp_localize_script( 'exove-js', 'exoveData', $localized_data );

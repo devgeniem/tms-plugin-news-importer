@@ -93,9 +93,11 @@ $accordion-item-distance: $space-m;
 
       &.active {
         display: block;
+        padding: $accordion-content-horizontal-margin;
         margin: $accordion-content-vertical-margin $accordion-content-horizontal-margin;
-
+  
         @include large {
+          padding: $accordion-content-margin--large;
           margin: $accordion-content-margin--large;
         }
       }
