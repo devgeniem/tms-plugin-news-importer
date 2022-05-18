@@ -138,7 +138,7 @@ final class NewsImporterPlugin {
     }
 
     /**
-     * Enqueue public side scripts if they exist.
+     * Enqueue styles and scripts to imported news only.
      */
     protected function enqueue_public_scripts() {
         if ( ! is_singular( 'post' ) || empty( get_field( 'drupal_post_id', get_the_ID() ) ) ) {
