@@ -116,14 +116,87 @@ final class NewsImporterPlugin {
      * Add plugin hooks and filters.
      */
     protected function hooks() {
-        add_action( 'init', \Closure::fromCallable( [ $this, 'init_classes' ] ), 0 );
+        \add_action( 'init', \Closure::fromCallable( [ $this, 'init_classes' ] ), 0 );
+        \add_action(
+            'wp_enqueue_scripts',
+            \Closure::fromCallable( [ $this, 'enqueue_public_scripts' ] )
+        );
+        \add_filter( 'the_content', \Closure::fromCallable( [ $this, 'maybe_remove_autop' ] ), 9 );
     }
 
     /**
      * Init classes
      */
     protected function init_classes() {
+        // bail early if not main site
+        // news fetching and importing is done via main site only
+        if ( ! is_main_site() ) {
+            return;
+        }
+
         ( new Cron() )->hooks();
+    }
+
+    /**
+     * Enqueue public side scripts if they exist.
+     */
+    protected function enqueue_public_scripts() {
+        if ( ! is_singular( 'post' ) || empty( get_field( 'drupal_post_id', get_the_ID() ) ) ) {
+            return;
+        }
+
+        $css_path = $this->plugin_path . '/assets/dist/public.css';
+
+        if ( file_exists( $css_path ) ) {
+            \wp_enqueue_style(
+                'exove-css',
+                $this->plugin_uri . '/assets/dist/public.css',
+                [],
+                filemtime( $css_path ),
+                'all'
+            );
+        }
+        
+        $js_path = $this->plugin_path . '/assets/dist/public.js';
+
+        if ( file_exists( $js_path ) ) {
+            \wp_register_script(
+                'exove-js',
+                $this->plugin_uri . '/assets/dist/public.js',
+                [ 'jquery' ],
+                filemtime( $js_path ),
+                true
+            );
+
+            $url_prefix = defined( 'WP_ENV' ) && WP_ENV && WP_ENV === 'production'
+                        ? 'https://www.tampere.fi'
+                        : 'https://staging.tampere.fi';
+
+            $localized_data = [
+                'urlPrefix' => $url_prefix,
+            ];
+
+            \wp_localize_script( 'exove-js', 'exoveData', $localized_data );
+
+            \wp_enqueue_script( 'exove-js' );
+        }
+    }
+
+    /**
+     * Maybe remove autop from news.
+     *
+     * @param string $content Post content.
+     *
+     * @return string
+     */
+    protected function maybe_remove_autop( string $content ) : string {
+        if ( ! is_singular( 'post' ) || empty( get_field( 'drupal_post_id', get_the_ID() ) ) ) {
+            return $content;
+        }
+
+        remove_filter( 'the_content', 'wpautop' );
+
+        return $content;
     }
 
     /**

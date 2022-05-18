@@ -6,6 +6,7 @@
     "license": "GPL-3.0-or-later",
     "private": true,
     "dependencies": {
+        "breakpoint-sass": "^2.7.1",
         "idempotent-babel-polyfill": "^7.4.4"
     },
     "devDependencies": {

@@ -15,11 +15,6 @@
 
 use TMS\Plugin\NewsImporter\NewsImporterPlugin;
 
-// If not on the main site, bail.
-if ( ! is_main_site() ) {
-    return;
-}
-
 // Check if Composer has been initialized in this directory.
 // Otherwise we just use global composer autoloading.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {

@@ -48,7 +48,6 @@ const config = {
     },
     entry: {
         public: 'scripts/public.js',
-        admin: 'scripts/admin.js',
     },
     output: {
         path: path.resolve( __dirname, 'assets', 'dist' ),
