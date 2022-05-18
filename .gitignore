@@ -10,3 +10,4 @@ composer.lock
 # Do not track package files
 vendor
 node_modules
+assets/dist
