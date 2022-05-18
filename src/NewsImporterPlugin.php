@@ -205,7 +205,7 @@ final class NewsImporterPlugin {
      * @return void
      */
     protected function init_cli_commands() : void {
-        if ( ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+        if ( ( defined( 'WP_CLI' ) && WP_CLI && is_main_site() ) ) {
             \WP_CLI::add_command(
                 'news import',
                 function() {

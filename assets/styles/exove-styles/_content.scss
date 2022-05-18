@@ -4,6 +4,10 @@
 
     .general-contact-card {
         padding: 20px;
+
+        > * {
+            color: #000 !important;
+        }
     }
 
     .paragraph {
