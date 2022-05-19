@@ -169,7 +169,7 @@ final class NewsImporterPlugin {
             );
 
             $localized_data = [
-                'iconsPath' => $this->plugin_uri . '/assets/dist/exove-svgs.svg',
+                'iconsPath' => $this->plugin_uri . '/assets/images/exove-svgs.svg',
             ];
 
             \wp_localize_script( 'exove-js', 'exoveData', $localized_data );
