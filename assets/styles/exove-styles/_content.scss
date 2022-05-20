@@ -13,4 +13,12 @@
     .anchor-link {
         display: none;
     }
+
+    .person-contact {
+        display: block;
+
+        &__image-container {
+            display: none;
+        }
+    }
 }
