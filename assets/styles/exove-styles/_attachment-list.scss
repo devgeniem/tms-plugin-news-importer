@@ -64,11 +64,9 @@
   
     &__summary {
       margin: 0 $space-m $space-s 0;
-      font-size: $font-14;
       flex-basis: 100%;
   
       @include large {
-        font-size: $font-18;
         margin: 0 $space-m $space-s $space-xl;
       }
     }
