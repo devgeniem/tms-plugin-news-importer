@@ -50,12 +50,10 @@
       @include word-wrap;
   
       margin: $space-s $space-m $space-s 0;
-      font-size: $font-18;
       flex: 1 0 50%;
   
       @include large {
         margin: $space-s $space-m;
-        font-size: $font-20;
       }
     }
   

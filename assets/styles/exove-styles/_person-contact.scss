@@ -7,7 +7,6 @@ $person-contact-image-size--large: 105px;
   --field-label-font-weight: #{$font-weight-semi-bold};
 
   display: grid;
-  font-size: $font-16;
   grid-template-columns: $person-contact-image-size 1fr;
   gap: $space-s;
   margin-top: $space-xl;
@@ -25,7 +24,6 @@ $person-contact-image-size--large: 105px;
   }
 
   @include medium {
-    font-size: $font-20;
     gap: $space-xl;
     grid-template-columns: $person-contact-image-size--large 1fr;
 
@@ -84,12 +82,10 @@ $person-contact-image-size--large: 105px;
   }
 
   &__legend {
-    font-size: $font-16;
     font-weight: $font-weight-bold;
     padding-bottom: $space-xxs;
 
     @include large {
-      font-size: $font-20;
       padding-bottom: $space-xs;
     }
   }
@@ -137,13 +133,8 @@ $person-contact-image-size--large: 105px;
 
   &__details {
     display: block;
-    font-size: $font-16;
     font-weight: $font-weight-regular;
     margin: 0;
-
-    @include large {
-      font-size: $font-20;
-    }
   }
 
   &__description {
