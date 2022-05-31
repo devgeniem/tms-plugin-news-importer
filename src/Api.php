@@ -34,7 +34,7 @@ final class Api {
      * @return bool|mixed
      */
     public function do_request( array $params = [], array $request_args = [], $endpoint, $next_page = '' ) {
-        $base_url = $this->get_api_base_url() . $endpoint;
+        $base_url = trailingslashit ( $this->get_api_base_url() ) . $endpoint;
 
         if ( empty( $base_url ) ) {
             return false;
