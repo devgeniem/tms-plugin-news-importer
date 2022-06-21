@@ -2,146 +2,148 @@ $person-contact-image-size: 75px;
 $person-contact-image-size--large: 105px;
 
 .person-contact {
-  @include word-wrap;
-
-  --field-label-font-weight: #{$font-weight-semi-bold};
-
-  display: grid;
-  grid-template-columns: $person-contact-image-size 1fr;
-  gap: $space-s;
-  margin-top: $space-xl;
-  padding-bottom: $space-xl;
-  position: relative;
-
-  &::after {
-    background-color: clr(accent-tertiary);
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-  }
-
-  @include medium {
-    gap: $space-xl;
-    grid-template-columns: $person-contact-image-size--large 1fr;
-
-    &::after {
-      left: 1%;
-      width: 98%;
-    }
-  }
-
-  &__image-container {
-    background-color: clr(accent-tertiary);
-    border-radius: 50%;
-    flex-shrink: 0;
-    overflow: hidden;
-    height: $person-contact-image-size;
-    width: $person-contact-image-size;
+    @include word-wrap;
+    --field-label-font-weight: #{$font-weight-semi-bold};
+    display: grid;
+    grid-template-columns: $person-contact-image-size 1fr;
+    gap: $space-s;
+    margin-top: $space-m-plus;
+    padding-bottom: $space-m-plus;
+    position: relative;
 
     @include medium {
-      height: $person-contact-image-size--large;
-      width: $person-contact-image-size--large;
-    }
-  }
+        gap: $space-m-plus;
+        grid-template-columns: $person-contact-image-size--large 1fr;
 
-  &__image {
-    color: clr(accent-tertiary);
-    height: $person-contact-image-size;
-    width: $person-contact-image-size;
-
-    @include medium {
-      height: $person-contact-image-size--large;
-      width: $person-contact-image-size--large;
+        &::after {
+            left: 1%;
+            width: 98%;
+        }
     }
 
-    &.desktop {
-      display: none;
+    &__image-container {
+        background-color: clr(accent-tertiary);
+        border-radius: 50%;
+        flex-shrink: 0;
+        overflow: hidden;
+        height: $person-contact-image-size;
+        width: $person-contact-image-size;
 
-      @include medium {
+        @include medium {
+            height: $person-contact-image-size--large;
+            width: $person-contact-image-size--large;
+        }
+    }
+
+    &__image {
+        color: clr(accent-tertiary);
+        height: $person-contact-image-size;
+        width: $person-contact-image-size;
+
+        @include medium {
+            height: $person-contact-image-size--large;
+            width: $person-contact-image-size--large;
+        }
+
+        &.desktop {
+            display: none;
+
+            @include medium {
+                display: block;
+            }
+        }
+
+        &.mobile {
+            @include medium {
+                display: none;
+            }
+        }
+    }
+
+    &__main-content {
+        @include medium {
+            display: flex;
+            column-gap: $space-xl;
+            flex-wrap: wrap;
+            row-gap: $space-m;
+        }
+    }
+
+    &__legend {
+        font-weight: $font-weight-bold;
+        padding-bottom: $space-xxs;
+
+        @include large {
+            padding-bottom: $space-xs;
+        }
+    }
+
+    &__name {
         display: block;
-      }
+        font-size: $font-24;
+        font-weight: $font-weight-bold;
+        margin: 0 0 $space-xxs;
+
+        &-wrapper {
+            margin-top: 0;
+        }
     }
 
-    &.mobile {
-      @include medium {
-        display: none;
-      }
+    &__contact-details,
+    &__description {
+        margin-top: $space-m;
+
+        @include medium {
+            margin-top: 0;
+        }
     }
-  }
 
-  &__main-content {
-    @include medium {
-      display: flex;
-      column-gap: $space-xl;
-      flex-wrap: wrap;
-      row-gap: $space-m;
+    &__information,
+    &__contact-details,
+    &__description {
+        @include medium-down {
+            grid-column-start: 2;
+        }
     }
-  }
 
-  &__legend {
-    font-weight: $font-weight-bold;
-    padding-bottom: $space-xxs;
+    &__information {
+        @include medium {
+            flex-basis: 45%;
 
-    @include large {
-      padding-bottom: $space-xs;
+            &--full {
+                flex-basis: 100%;
+            }
+        }
     }
-  }
 
-  &__name {
-    display: block;
-
-    &-wrapper {
-        margin-top: 0;
+    &__contact-details {
+        @include medium {
+            flex-basis: 45%;
+        }
     }
-  }
 
-  &__contact-details,
-  &__description {
-    margin-top: $space-m;
-
-    @include medium {
-      margin-top: 0;
+    &__details {
+        display: block;
+        font-weight: $font-weight-semi-bold;
+        margin: 0;
     }
-  }
 
-  &__information,
-  &__contact-details,
-  &__description {
-    @include medium-down {
-      grid-column-start: 2;
+    &__description {
+        @include medium {
+            flex-basis: 100%;
+        }
     }
-  }
 
-  &__information {
-    @include medium {
-      flex-basis: 45%;
-
-      &--full {
-        flex-basis: 100%;
-      }
+    .field-label-above,
+    .field-label-inline {
+        font-weight: $font-weight-bold;
+        font-weight: var(--field-label-font-weight);
     }
-  }
 
-  &__contact-details {
-    @include medium {
-      flex-basis: 45%;
+    .field-label-inline {
+        display: inline;
+        margin-right: $space-xs;
     }
-  }
-
-  &__details {
-    display: block;
-    font-weight: $font-weight-regular;
-    margin: 0;
-  }
-
-  &__description {
-    @include medium {
-      flex-basis: 100%;
-    }
-  }
 }
 
 .paragraph--type-person-liftup {

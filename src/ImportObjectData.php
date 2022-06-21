@@ -157,16 +157,18 @@ class ImportObjectData {
         $replace_map = [];
 
         $url_prefix = defined( 'WP_ENV' ) && WP_ENV && WP_ENV === 'production'
-                    ? 'https://www.tampere.fi'
-                    : 'https://staging.tampere.fi';
+            ? 'https://www.tampere.fi'
+            : 'https://staging.tampere.fi';
+
+        $url_prefix = 'https://www.tampere.fi';
 
         // modify relative urls
         $nodes->filter( 'a, img, source, iframe' )->each( function ( Crawler $node ) use ( &$replace_map, $url_prefix ) {
-            
-            $url  = '';
+
+            $url = '';
 
             if ( ! empty( $node->attr( 'href' ) ) ) {
-                $url  = $node->attr( 'href' );
+                $url = $node->attr( 'href' );
             }
 
             if ( ! empty( $node->attr( 'src' ) ) ) {
