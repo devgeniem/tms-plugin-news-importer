@@ -170,11 +170,11 @@ class ImportObjectData {
             }
 
             if ( ! empty( $node->attr( 'src' ) ) ) {
-                $url  = $node->attr( 'src' );
+                $url = $node->attr( 'src' );
             }
 
             if ( ! empty( $node->attr( 'srcset' ) ) ) {
-                $url  = $node->attr( 'srcset' );
+                $url = $node->attr( 'srcset' );
             }
 
             $parsed_url = parse_url( $url );
@@ -198,7 +198,7 @@ class ImportObjectData {
         } );
 
         // remove some divs
-        $nodes->filter('div.content-img__heading, .node-title, .field-lead, .content-img')->each( function ( Crawler $crawler ) {
+        $nodes->filter( 'div.content-img__heading, .node-title, .field-lead, .content-img' )->each( function ( Crawler $crawler ) {
             foreach ( $crawler as $node ) {
                 $node->parentNode->removeChild( $node );
             }
