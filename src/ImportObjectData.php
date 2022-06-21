@@ -35,8 +35,8 @@ class ImportObjectData {
      */
     public function get_id() {
         return $this->object_data->id
-               ? $this->object_data->langcode . '_' . $this->object_data->id
-               : '';
+            ? $this->object_data->langcode . '_' . $this->object_data->id
+            : '';
     }
 
     /**
@@ -91,8 +91,8 @@ class ImportObjectData {
      */
     public function get_content() {
         return empty( $this->object_data->field_markup )
-               ? ''
-               : $this->handle_content( $this->object_data->field_markup->markup );
+            ? ''
+            : $this->handle_content( $this->object_data->field_markup->markup );
     }
 
     /**
@@ -159,8 +159,6 @@ class ImportObjectData {
         $url_prefix = defined( 'WP_ENV' ) && WP_ENV && WP_ENV === 'production'
             ? 'https://www.tampere.fi'
             : 'https://staging.tampere.fi';
-
-        $url_prefix = 'https://www.tampere.fi';
 
         // modify relative urls
         $nodes->filter( 'a, img, source, iframe' )->each( function ( Crawler $node ) use ( &$replace_map, $url_prefix ) {
