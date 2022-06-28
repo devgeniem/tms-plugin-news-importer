@@ -70,7 +70,8 @@ $person-contact-image-size--large: 105px;
     }
 
     &__legend {
-        font-weight: $font-weight-bold;
+        font-size: 90%;
+        font-weight: $font-weight-semi-bold;
         padding-bottom: $space-xxs;
 
         @include large {
@@ -80,7 +81,6 @@ $person-contact-image-size--large: 105px;
 
     &__name {
         display: block;
-        font-size: $font-24;
         font-weight: $font-weight-bold;
         margin: 0 0 $space-xxs;
 
@@ -124,6 +124,7 @@ $person-contact-image-size--large: 105px;
 
     &__details {
         display: block;
+        font-size: 90%;
         font-weight: $font-weight-semi-bold;
         margin: 0;
     }
@@ -136,7 +137,8 @@ $person-contact-image-size--large: 105px;
 
     .field-label-above,
     .field-label-inline {
-        font-weight: $font-weight-bold;
+        font-size: 90%;
+        font-weight: $font-weight-semi-bold;
         font-weight: var(--field-label-font-weight);
     }
 
