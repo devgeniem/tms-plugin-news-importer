@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+## [0.1.4] - 2022-06-29
+
 - TMS-888: Tweak Drupal contact person styles
 
 ## [0.1.3] - 2022-06-21
