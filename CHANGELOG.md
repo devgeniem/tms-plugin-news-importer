@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+- PIEN-7610: Fix category assigning, disable removing autop.
+
 ## [0.1.5] - 2022-08-23
 
 - TMS-894: Fix composer

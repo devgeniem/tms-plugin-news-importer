@@ -272,17 +272,17 @@ final class Importer {
                     'image_credits'   => $image_credits,
                 ],
             ] );
-    
+
             if ( empty( $post_id ) || $post_id instanceof \WP_Error ) {
                 ( new Logger() )->error( 'Error creating or updating a post in site ' . $target_site . 'with drupal id ' . $drupal_post_id );
             }
 
+            pll_set_post_language( $post_id, $post_lang );
+
             $category = $post_lang === 'en' ? 'News' : 'Uutinen';
 
             wp_set_object_terms( $post_id, $category, 'category' );
-    
-            pll_set_post_language( $post_id, $post_lang );
-    
+
             restore_current_blog();
         }
     }
