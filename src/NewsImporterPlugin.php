@@ -121,7 +121,10 @@ final class NewsImporterPlugin {
             'wp_enqueue_scripts',
             \Closure::fromCallable( [ $this, 'enqueue_public_scripts' ] )
         );
-        \add_filter( 'the_content', \Closure::fromCallable( [ $this, 'maybe_remove_autop' ] ), 9 );
+
+        // This is disabled for now because it breaks the layout of imported posts if they have been
+        // modified after importing.
+        // \add_filter( 'the_content', \Closure::fromCallable( [ $this, 'maybe_remove_autop' ] ), 9 );
     }
 
     /**
@@ -179,7 +182,7 @@ final class NewsImporterPlugin {
     }
 
     /**
-     * Maybe remove autop from news.
+     * Maybe remove autop from news. Disabled for now because it breaks the layout.
      *
      * @param string $content Post content.
      *
