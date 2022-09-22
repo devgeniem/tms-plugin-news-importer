@@ -140,11 +140,28 @@ $person-contact-image-size--large: 105px;
         font-size: 90%;
         font-weight: $font-weight-semi-bold;
         font-weight: var(--field-label-font-weight);
+
+        // Content may include extra <p> tags, here we negate the top margin of those
+        // to show them properly.
+        + p {
+            margin-top: 0;
+        }
     }
 
     .field-label-inline {
         display: inline;
         margin-right: $space-xs;
+
+        // Content may include extra <p> tags, these should be treated as inline content.
+        + p {
+            display: inline;
+        }
+    }
+
+    // Content may include extra <br> or empty <p> tags, here we ignore them.
+    br,
+    p:empty {
+        display: none;
     }
 }
 

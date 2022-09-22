@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+- PIEN-7610: Style fixes for extra paragraphs and line breaks inside Drupal content.
+
 ## [0.1.6] - 2022-09-20
 
 - PIEN-7610: Fix category assigning, disable removing autop.

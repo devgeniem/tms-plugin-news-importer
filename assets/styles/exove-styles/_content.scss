@@ -21,4 +21,16 @@
             display: none;
         }
     }
+
+    // Fix extra <br> and empty <p> tags within the authors component.
+    .field-authors {
+        p {
+            display: inline;
+        }
+
+        br,
+        p:empty {
+            display: none;
+        }
+    }
 }
