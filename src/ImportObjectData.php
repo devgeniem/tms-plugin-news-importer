@@ -180,7 +180,7 @@ class ImportObjectData {
             ->children( 'p' )
             ->each( function ( Crawler $node ) use ( $doc ) {
                 foreach ( $node as $p ) {
-                    $span = $doc->createElement( 'span', $p->textContent );
+                    $span = $doc->createElement( 'span', trim( $p->textContent ) );
                     $span->setAttribute( 'class', $p->getAttribute( 'class' ) );
                     $p->parentNode->replaceChild( $span, $p );
                 }
