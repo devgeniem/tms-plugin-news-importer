@@ -153,14 +153,40 @@ class ImportObjectData {
      * @return string
      */
     private function handle_content( string $content ) : string {
-        $nodes       = new Crawler( $content );
+        // Suppress DOMDocument XML errors.
+        \libxml_use_internal_errors( true );
+        $doc = new \DOMDocument();
+        $doc->loadHTML( '<?xml encoding="utf-8" ?>' . $content );
+
+        // Create a Crawler object from the DOMDocument.
+        $nodes       = new Crawler( $doc );
         $replace_map = [];
 
         $url_prefix = defined( 'WP_ENV' ) && WP_ENV && WP_ENV === 'production'
             ? 'https://www.tampere.fi'
             : 'https://staging.tampere.fi';
 
-        // modify relative urls
+        // Remove all <br> tags.
+        $nodes->filter( 'br' )->each( function ( Crawler $node ) use ( $doc ) {
+            foreach ( $node as $br ) {
+                $br->parentNode->removeChild( $br );
+            }
+        } );
+
+        // The content may have <p> tags inside <a> tags which are messing the layout in WordPress,
+        // so let's change those to <span> tags preserving the original HTML class.
+        $nodes
+            ->filter( 'a' )
+            ->children( 'p' )
+            ->each( function ( Crawler $node ) use ( $doc ) {
+                foreach ( $node as $p ) {
+                    $span = $doc->createElement( 'span', $p->textContent );
+                    $span->setAttribute( 'class', $p->getAttribute( 'class' ) );
+                    $p->parentNode->replaceChild( $span, $p );
+                }
+            } );
+
+        // Modify relative URLs.
         $nodes->filter( 'a, img, source, iframe' )->each( function ( Crawler $node ) use ( &$replace_map, $url_prefix ) {
 
             $url = '';
@@ -220,6 +246,9 @@ class ImportObjectData {
         foreach ( $article_tag_replacements as $find => $replace ) {
             $content = str_replace( $find, $replace, $content );
         }
+
+        // Strip all extra line breaks to fix WordPress adding multiple unnecessary <p> tags.
+        $content = str_replace( [ "\r", "\n" ], ' ', $content );
 
         return $content;
     }
