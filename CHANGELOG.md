@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+## [0.2.0] - 2022-10-03
+
 - PIEN-7627: Style fixes for extra paragraphs and line breaks inside Drupal content.
 - PIEN-7627: Drupal import: handle <p> tags inside <a> tags, strip line breaks.
 
