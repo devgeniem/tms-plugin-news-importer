@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+- PIEN-7776: Secure case where no anchor links exist in content.
+
 ## [0.2.0] - 2022-10-03
 
 - PIEN-7627: Style fixes for extra paragraphs and line breaks inside Drupal content.
