@@ -30,7 +30,7 @@
     }
   
     &__link {
-      text-decoration: none;
+      text-decoration: underline;
       color: clr(text);
       display: flex;
       align-items: center;
@@ -40,9 +40,17 @@
   
       &:focus,
       &:hover {
-        #{$base_class}__name {
-          text-decoration: underline;
-        }
+        text-decoration: none;
+      }
+
+      // Hide icons, they are not working correctly after importing from Drupal.
+      svg {
+        display: none;
+      }
+
+      // Negate all unnecessary margins of (mostly) empty paragraphs.
+      p:not(.attachment-list__name) {
+        display: inline;
       }
     }
   
