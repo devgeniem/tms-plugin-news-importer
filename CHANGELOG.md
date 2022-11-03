@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+## [0.2.2] - 2022-11-03
+
 - PIEN-7780: Remove link manipulation when importing from Drupal, handle problem with styles.
 
 ## [0.2.1] - 2022-10-31
