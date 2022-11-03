@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+- PIEN-7780: Remove link manipulation when importing from Drupal, handle problem with styles.
+
 ## [0.2.1] - 2022-10-31
 
 - PIEN-7776: Secure case where no anchor links exist in content.

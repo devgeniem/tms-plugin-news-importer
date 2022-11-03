@@ -173,21 +173,6 @@ class ImportObjectData {
             }
         } );
 
-        // The content may have <p> tags inside <a> tags which are messing the layout in WordPress,
-        // so let's change those to <span> tags preserving the original HTML class.
-        $anchor_links = $nodes->filter( 'a' );
-        if ( $anchor_links->count() ) {
-            $anchor_links
-                ->children( 'p' )
-                ->each( function ( Crawler $node ) use ( $doc ) {
-                    foreach ( $node as $p ) {
-                        $span = $doc->createElement( 'span', trim( $p->textContent ) );
-                        $span->setAttribute( 'class', $p->getAttribute( 'class' ) );
-                        $p->parentNode->replaceChild( $span, $p );
-                    }
-                } );
-        }
-
         // Modify relative URLs.
         $nodes->filter( 'a, img, source, iframe' )->each( function ( Crawler $node ) use ( &$replace_map, $url_prefix ) {
 
