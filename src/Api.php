@@ -34,12 +34,11 @@ final class Api {
      * @return bool|mixed
      */
     public function do_request( array $params = [], array $request_args = [], $endpoint, $next_page = '' ) {
-        $base_url = trailingslashit ( $this->get_api_base_url() ) . $endpoint;
+        $base_url = trailingslashit( $this->get_api_base_url() ) . $endpoint;
 
         if ( empty( $base_url ) ) {
             return false;
         }
-
 
         $request_url = ! empty( $next_page ) ? $next_page : \add_query_arg(
             $params,
@@ -147,12 +146,11 @@ final class Api {
                     ],
                 ],
             ],
-            'page'    => [
-                'limit' => 50,
+            'page' => [
+                'limit'  => 50,
                 'offset' => 0,
             ],
         ];
-
 
         if ( $lang_code === 'fi' ) {
             return $params;
