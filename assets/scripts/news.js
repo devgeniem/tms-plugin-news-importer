@@ -40,7 +40,8 @@ class News {
         this.exoveContent.find( 'use' ).each( function() {
             const xlinkHref = $( this ).attr( 'xlink:href' );
             const iconName = xlinkHref.substr( xlinkHref.indexOf( '#' ) );
-            $( this ).attr( 'xlink:href', `${ exoveData.iconsPath }${ iconName }` );
+            // exoveData defined in NewsImporterPlugin.php localize script
+            $( this ).attr( 'xlink:href', `${ exoveData.iconsPath }${ iconName }` ); // eslint-disable-line no-undef
         } );
     }
 
