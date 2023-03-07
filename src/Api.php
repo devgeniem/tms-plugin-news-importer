@@ -33,7 +33,7 @@ final class Api {
      *
      * @return bool|mixed
      */
-    public function do_request( array $params = [], array $request_args = [], $endpoint, $next_page = '' ) {
+    public function do_request( array $params = [], array $request_args = [], $next_page = '', $endpoint ) {
         $base_url = trailingslashit( $this->get_api_base_url() ) . $endpoint;
 
         if ( empty( $base_url ) ) {
@@ -109,7 +109,7 @@ final class Api {
      * @return array
      */
     protected function do_get( array $data = [], array $params = [], array $args = [], $endpoint, $next_page = '' ) {
-        $response = $this->do_request( $params, $args, $endpoint, $next_page );
+        $response = $this->do_request( $params, $args, $next_page, $endpoint );
 
         if ( ! $this->is_valid_response( $response ) ) {
             return $data;
