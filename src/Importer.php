@@ -157,7 +157,7 @@ final class Importer {
     /**
      * Create importable object.
      *
-     * @param object @import_object
+     * @param object $import_object Object to import.
      *
      * @return PostImportable
      */
@@ -226,7 +226,7 @@ final class Importer {
     /**
      * Insert post to site.
      *
-     * @param int $id
+     * @param int $id Post id to insert.
      *
      * @return void
      */
