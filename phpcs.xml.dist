@@ -17,4 +17,7 @@
     <arg name="colors"/>
     <arg name="extensions" value="php"/>
     <arg name="parallel" value="50"/>
+
+    <!-- Check code for cross-version PHP compatibility. -->
+    <config name="testVersion" value="8.1"/>
 </ruleset>
