@@ -39,8 +39,8 @@ class News {
 
         this.exoveContent.find( 'use' ).each( function() {
             const xlinkHref = $( this ).attr( 'xlink:href' );
-            const iconName  = xlinkHref.substr( xlinkHref.indexOf( '#' ) );
-            $( this ).attr( 'xlink:href', `${exoveData.iconsPath}${iconName}` );
+            const iconName = xlinkHref.substr( xlinkHref.indexOf( '#' ) );
+            $( this ).attr( 'xlink:href', `${ exoveData.iconsPath }${ iconName }` );
         } );
     }
 
@@ -51,7 +51,7 @@ class News {
      *
      * @return {void}
      */
-     toggle( event ) {
+    toggle( event ) {
         const toggleTrigger = $( event.currentTarget );
         const ariaExpandedState = toggleTrigger.attr( 'aria-expanded' ) === 'false';
         const duration = typeof toggleTrigger.data( 'duration' ) !== undefined ? toggleTrigger.data( 'duration' ) : 400;
