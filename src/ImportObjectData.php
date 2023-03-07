@@ -169,7 +169,7 @@ class ImportObjectData {
         // Remove all <br> tags.
         $nodes->filter( 'br' )->each( function ( Crawler $node ) use ( $doc ) {
             foreach ( $node as $br ) {
-                $br->parentNode->removeChild( $br );
+                $br->parentNode->removeChild( $br ); // phpcs:ignore
             }
         } );
 
@@ -213,7 +213,7 @@ class ImportObjectData {
         // remove some divs
         $nodes->filter( 'div.content-img__heading, .node-title, .field-lead, .content-img' )->each( function ( Crawler $crawler ) {
             foreach ( $crawler as $node ) {
-                $node->parentNode->removeChild( $node );
+                $node->parentNode->removeChild( $node ); // phpcs:ignore
             }
         } );
 
