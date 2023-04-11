@@ -18,6 +18,6 @@
     <arg name="extensions" value="php"/>
     <arg name="parallel" value="50"/>
 
-    <!-- Check code for cross-version PHP compatibility. -->
+    <!-- Check code for cross-version PHP compatibility PHP 8.1 or higher. -->
     <config name="testVersion" value="8.1-"/>
 </ruleset>
