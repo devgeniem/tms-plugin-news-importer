@@ -26,20 +26,19 @@ final class Api {
     /**
      * Do an API request
      *
+     * @param string $endpoint     Api endpoint.
      * @param array  $params       Request query parameters.
      * @param array  $request_args Request args.
-     * @param string $endpoint     Api endpoint.
      * @param string $next_page    Next page of the results.
      *
      * @return bool|mixed
      */
-    public function do_request( array $params = [], array $request_args = [], $endpoint, $next_page = '' ) {
-        $base_url = trailingslashit ( $this->get_api_base_url() ) . $endpoint;
+    public function do_request( $endpoint, array $params = [], array $request_args = [], $next_page = '' ) {
+        $base_url = trailingslashit( $this->get_api_base_url() ) . $endpoint;
 
         if ( empty( $base_url ) ) {
             return false;
         }
-
 
         $request_url = ! empty( $next_page ) ? $next_page : \add_query_arg(
             $params,
@@ -95,22 +94,22 @@ final class Api {
 
         $endpoint = $lang_code === 'fi' ? 'api/node/news_item' : 'en/api/node/news_item';
 
-        return $this->do_get( [], $params, $args, $endpoint );
+        return $this->do_get( $endpoint, [], $params, $args );
     }
 
     /**
      * Recursively get all pages from API.
      *
+     * @param string $endpoint  Api endpoint.
      * @param array  $data      Fetched persons.
      * @param array  $params    Query params.
      * @param array  $args      Request arguments.
-     * @param string $endpoint  Api endpoint.
      * @param string $next_page Next page of the results.
      *
      * @return array
      */
-    protected function do_get( array $data = [], array $params = [], array $args = [], $endpoint, $next_page = '' ) {
-        $response = $this->do_request( $params, $args, $endpoint, $next_page );
+    protected function do_get( $endpoint, array $data = [], array $params = [], array $args = [], $next_page = '' ) {
+        $response = $this->do_request( $endpoint, $params, $args, $next_page );
 
         if ( ! $this->is_valid_response( $response ) ) {
             return $data;
@@ -121,7 +120,7 @@ final class Api {
 
         return empty( $next_page )
             ? $data
-            : $this->do_get( $data, [], $args, $endpoint, $next_page );
+            : $this->do_get( $endpoint, $data, [], $args, $next_page );
     }
 
     /**
@@ -147,12 +146,11 @@ final class Api {
                     ],
                 ],
             ],
-            'page'    => [
-                'limit' => 50,
+            'page' => [
+                'limit'  => 50,
                 'offset' => 0,
             ],
         ];
-
 
         if ( $lang_code === 'fi' ) {
             return $params;

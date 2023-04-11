@@ -157,7 +157,7 @@ final class Importer {
     /**
      * Create importable object.
      *
-     * @param object @import_object
+     * @param object $import_object Object to import.
      *
      * @return PostImportable
      */
@@ -226,7 +226,7 @@ final class Importer {
     /**
      * Insert post to site.
      *
-     * @param int $id
+     * @param int $id Post id to insert.
      *
      * @return void
      */
@@ -239,7 +239,6 @@ final class Importer {
         $post_lang         = pll_get_post_language( $id );
         $writing_credits   = get_post_meta( $id, 'writing_credits', true );
         $image_credits     = get_post_meta( $id, 'image_credits', true );
-
 
         foreach ( $target_site as $site ) {
             switch_to_blog( $site );
@@ -254,9 +253,9 @@ final class Importer {
                 'posts_per_page' => '1',
                 'fields'         => 'ids',
             ] );
-    
+
             $post_id_in_target_site = ! empty( $post_id_in_target_site->posts[0] ) ? $post_id_in_target_site->posts[0] : 0;
-  
+
             $post_id = wp_insert_post( [
                 'ID'           => $post_id_in_target_site,
                 'post_title'   => $post_in_main_site->post_title,
