@@ -107,6 +107,17 @@ class ImportObjectData {
     }
 
     /**
+     * Get image alternative text.
+     *
+     * @return string
+     */
+    public function get_image_alt() {
+        $image = $this->object_data->field_main_image->field_media_image ?: null;
+
+        return empty( $image ) ? '' : $image->meta->alt;
+    }
+
+    /**
      * Get target sites.
      *
      * @return array
