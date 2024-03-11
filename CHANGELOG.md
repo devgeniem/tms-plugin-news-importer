@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+- TMS-1018: Remove margin from paragraph-tags around images
+
 ## [0.3.0] - 2022-04-11
 
 - PIEN-8157: PHP 8.1
