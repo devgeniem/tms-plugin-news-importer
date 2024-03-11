@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning][semver].
 ## [Unreleased]
 
 - TMS-1017: Add news image alt-text
+- TMS-1018: Remove margin from paragraph-tags around images
 
 ## [0.3.0] - 2022-04-11
 

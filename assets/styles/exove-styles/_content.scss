@@ -8,6 +8,10 @@
 
     .paragraph {
         position: relative;
+
+        &--type-image p {
+            margin: 0;
+        }
     }
 
     .anchor-link {
