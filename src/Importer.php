@@ -210,6 +210,10 @@ final class Importer {
                     'value' => $import_object->get_image(),
                 ],
                 [
+                    'key'   => 'image_alt',
+                    'value' => $import_object->get_image_alt(),
+                ],
+                [
                     'key'   => 'writing_credits',
                     'value' => $import_object->get_writing_credits(),
                 ],
@@ -236,6 +240,7 @@ final class Importer {
         $target_site       = unserialize( get_post_meta( $id, 'wp_site_id', true ) );
         $drupal_post_id    = get_post_meta( $id, 'drupal_post_id', true );
         $image_url         = get_post_meta( $id, 'image_url', true );
+        $image_alt         = get_post_meta( $id, 'image_alt', true );
         $post_lang         = pll_get_post_language( $id );
         $writing_credits   = get_post_meta( $id, 'writing_credits', true );
         $image_credits     = get_post_meta( $id, 'image_credits', true );
@@ -267,6 +272,7 @@ final class Importer {
                     'drupal_post_id'  => $drupal_post_id,
                     'wp_site_id'      => $site,
                     'image_url'       => $image_url,
+                    'image_alt'       => $image_alt,
                     'writing_credits' => $writing_credits,
                     'image_credits'   => $image_credits,
                 ],

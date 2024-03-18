@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+## [0.3.1] - 2024-03-18
+
+- TMS-1017: Add news image alt-text
+
 ## [0.3.0] - 2022-04-11
 
 - PIEN-8157: PHP 8.1
