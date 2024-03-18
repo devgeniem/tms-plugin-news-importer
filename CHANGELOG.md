@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
-## [0.3.1] - 2022-03-18
+## [0.3.1] - 2024-03-18
 
 - TMS-1017: Add news image alt-text
 
