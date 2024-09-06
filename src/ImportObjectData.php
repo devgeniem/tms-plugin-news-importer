@@ -58,6 +58,15 @@ class ImportObjectData {
     }
 
     /**
+     * Get published at time.
+     *
+     * @return string
+     */
+    public function get_published_time() {
+        return $this->object_data->published_at ?: '';
+    }
+
+    /**
      * Get created time.
      *
      * @return string
