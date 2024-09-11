@@ -162,7 +162,7 @@ final class Importer {
      * @return PostImportable
      */
     public function create_importable_object( object $import_object ) : PostImportable {
-        $post_date     = $import_object->get_created_time();
+        $post_date     = $import_object->get_published_time();
         $post_date_gmt = ( new \DateTime( $post_date ) )->format( 'Y-m-d H:i:s' );
 
         $post_modified_date     = $import_object->get_changed_time();
