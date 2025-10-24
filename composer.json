@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "composer/installers": "^v1.10.0",
+        "composer/installers": "^v2.3.0",
         "symfony/dom-crawler": "^5.4",
         "symfony/css-selector": "^5.4"
     },
