@@ -262,9 +262,9 @@ $projectColors: (
 // Note: (The `--c-` is added via the `@each` loops below)
 @function clr($colorChoice, $fallback: null) {
   @if $fallback {
-    @return var(--c-#{$colorChoice}, #{$fallback});
+    @return var(--c-#{"" + $colorChoice}, #{$fallback});
   } @else {
-    @return var(--c-#{$colorChoice});
+    @return var(--c-#{"" + $colorChoice});
   }
 }
 
@@ -303,7 +303,7 @@ $projectColors: (
 :root {
   // Create custom properties for default colors
   @each $name, $color in $defaultColors {
-    --c-#{$name}: #{$color};
+    --c-#{"" + $name}: #{$color};
   }
 
   // Create custom properties for minisite palette colors
@@ -311,7 +311,7 @@ $projectColors: (
     $i: index($minisitePalettes, $palette);
     .palette-#{$i} {
       @each $name, $color in $palette {
-        --c-#{$name}: #{$color};
+        --c-#{"" + $name}: #{$color};
       }
     }
   }
@@ -446,7 +446,7 @@ $node-preview-container-bg-color: $color-white;
   // Style default color swatches
   @each $name, $color in $defaultColors {
     .cl-colors__item--default {
-      &-#{$name} {
+      &-#{"" + $name} {
       background-color: clr($name);
       color: set-color($color);
       }
@@ -456,7 +456,7 @@ $node-preview-container-bg-color: $color-white;
   // Style project palette color swatches
   @each $name, $color in $projectColors {
     .cl-colors__item--project {
-      &-#{$name} {
+      &-#{"" + $name} {
       background-color: $color;
       color: set-color($color);
       }
