@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning][semver].
 
 ## [Unreleased]
 
+- Update Node, webpack & dependency versions
+
 ## [0.3.2] - 2024-09-12
 
 - TMS-1063: Change post_date from 'created' to 'published_at'
