@@ -5,9 +5,15 @@
  */
 const webpack = require( 'webpack' );
 const path = require( 'path' );
+const { webcrypto } = require( 'crypto' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const CssMinimizerPlugin = require( 'css-minimizer-webpack-plugin' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
+
+// Some minimizer internals expect Web Crypto to exist as a global.
+if ( typeof global.crypto === 'undefined' && webcrypto ) {
+    global.crypto = webcrypto;
+}
 
 // Check for production mode.
 const isProduction = process.env.NODE_ENV === 'production';
